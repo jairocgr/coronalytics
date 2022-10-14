@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Walker Bright
+  email: wbright@gmail.com
+  # bcrypt 12 rounds for F3D9319EAE2E7
+  password_digest: $2a$12$VQsFRvaROV.fLsHesoQoy.hIZaALrwHtoHy1HIj2VYszoLMyrKWZ6
+
+two:
+  name: Dell Russell Moore
+  email: dell.moore@live.com
+  # bcrypt 12 rounds for F3D9319EAE2E7
+  password_digest: $2a$12$VQsFRvaROV.fLsHesoQoy.hIZaALrwHtoHy1HIj2VYszoLMyrKWZ6
