@@ -57,6 +57,9 @@ group :development, :test do
 
   # Load env from .env file
   gem 'dotenv-rails'
+
+  # To generate fake data for database seeding
+  gem 'faker', '~> 2.23'
 end
 
 group :development do
