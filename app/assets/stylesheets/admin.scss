@@ -1,0 +1,33 @@
+
+.main {
+  margin-top: 40px * 2;
+}
+
+.footer {
+  margin-top: 64px;
+
+  .text {
+    color: #999;
+    font-style: italic;
+    font-size: 13px;
+  }
+}
+
+.navbar-brand {
+  color: #AAA;
+  .hl { color: #DDD; }
+
+  :hover {
+    color: #FFF;
+  }
+}
+
+.table {
+  tbody {
+    tr:last-child {
+      td {
+        border-bottom-color: #999;
+      }
+    }
+  }
+}

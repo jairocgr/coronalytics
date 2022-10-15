@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coronalytics Admin</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "admin", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "bootstrap" %>
+    <%= javascript_include_tag "jquery" %>
+  </head>
+
+  <body>
+    <%= render 'admin/shared/header' %>
+
+    <main class="main">
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <%= render "admin/shared/footer" %>
+  </body>
+</html>

@@ -31,3 +31,6 @@
 
 en:
   hello: "Hello world"
+  admin:
+    users:
+      list_title: All Users

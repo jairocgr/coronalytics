@@ -1,0 +1,32 @@
+
+<h1><%= t 'admin.users.list_title' %></h1>
+
+<% if @users.empty? then %>
+  No users yet
+<% else %>
+  <table class="table">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>E-mail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |u| %>
+        <tr>
+          <td><%= u.id %></td>
+          <td><%= u.name %></td>
+          <td><%= u.email %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+<% end %>
+
+<script type="text/javascript">
+  $(function() {
+      console.log( "ready!" );
+  });
+</script>
