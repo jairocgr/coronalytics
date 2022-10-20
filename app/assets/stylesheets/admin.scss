@@ -1,15 +1,12 @@
+//= require notifybar
 
 .main {
   margin-top: 40px * 2;
 }
 
 .footer {
-  margin-top: 64px;
-
   .text {
-    color: #999;
-    font-style: italic;
-    font-size: 13px;
+    color: #BBB;
   }
 }
 
@@ -29,5 +26,38 @@
         border-bottom-color: #999;
       }
     }
+  }
+}
+
+.list-header {
+  margin-bottom: 20px;
+}
+
+.fadded-secondary-action {
+  padding-left: 0.5em;
+  display: inline-block;
+  .bt {
+    padding-left: 0.5em;
+    color: #777;
+    text-decoration: none;
+    &:hover { color: #333; }
+  }
+}
+
+.resultset-info {
+  font-size: 14px;
+  font-style: italic;
+  margin-bottom: 16px;
+}
+
+.search-info {
+  font-style: italic;
+  margin-bottom: 18px;
+  .bt-edit {
+    font-size: 0.8em;
+    padding-left: 6px;
+  }
+  a:hover {
+    cursor: pointer;
   }
 }

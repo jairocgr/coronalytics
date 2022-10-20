@@ -1,32 +1,119 @@
 
-<h1><%= t 'admin.users.list_title' %></h1>
+<div class="list-header row">
+  <div class="col-md-8 col-12">
+    <h1><%= t 'admin.users.index.title' %></h1>
+    <p class="lead">
+      <%= t 'admin.users.index.subtitle' %>
+    </p>
+  </div>
+  <div class="col-md-4 col-12 text-md-end">
+    <div class="btn-group">
+      <a class="btn btn-primary" href="<%= new_admin_user_path %>">
+        <i class="fa fa-plus"></i> <%= t 'admin.users.index.bt.new_user' %>
+      </a>
+      <a class="btn btn-dark bt-show-search">
+        <%= t 'admin.users.index.bt.filter' %> <i class="fa fa-search"></i>
+      </a>
+    </div>
+  </div>
+</div>
 
-<% if @users.empty? then %>
-  No users yet
-<% else %>
-  <table class="table">
-    <thead class="table-dark">
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>E-mail</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @users.each do |u| %>
-        <tr>
-          <td><%= u.id %></td>
-          <td><%= u.name %></td>
-          <td><%= u.email %></td>
-        </tr>
+<div class="row search" style="display: none">
+  <div class="col-md-7 col-12">
+    <div class="p-5 mb-5 bg-light">
+      <h3 class="mb-4">
+        <%= t 'admin.users.index.bt.filter' %> <i class="fa fa-search"></i>
+      </h3>
+
+      <%= form_with(model: @user_filter, url: admin_users_path, method: 'GET' ) do |form| %>
+        <div class="mb-3">
+          <%= form.label :name, class: 'form-label' %>
+          <%= form.text_field :name, class: 'form-control' %>
+          <div class="form-text">
+            <%= t 'admin.user_filter.name.description' %>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <%= form.label :email, class: 'form-label' %>
+          <%= form.text_field :email, class: 'form-control' %>
+        </div>
+
+        <div>
+          <%= form.submit 'Apply Filter', class: 'btn btn-primary' %>
+          <div class="fadded-secondary-action">
+            or
+            <a class="bt" href="<%= admin_users_path %>">
+              Remove Filters <i class="fa fa-close"></i>
+            </a>
+          </div>
+        </div>
       <% end %>
-    </tbody>
-  </table>
+    </div>
+  </div>
+</div>
 
+
+
+<% unless @user_filter.empty? then %>
+  <div class="search-info">
+    <%= t 'search.info_html',
+      search_params: @user_filter.search_params,
+      total_found: @users.total_count
+    %>
+    <a class="bt-edit bt-show-search">
+      Edit Search <i class="fa fa-pencil"></i>
+    </a>
+  </div>
 <% end %>
 
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>E-mail</th>
+      <th>Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @users.each do |u| %>
+      <tr>
+        <td><%= u.id %></td>
+        <td><%= u.name %></td>
+        <td><%= u.email %></td>
+        <td>
+          <%= form_tag(admin_user_path(u), method: "DELETE") do %>
+            <div class="btn-group btn-group-sm">
+              <a class="btn btn-primary" href="<%= edit_admin_user_path(u) %>">
+                <i class="fa fa-edit"></i> Edit
+              </a>
+              <button type="submit" class="btn btn-danger" onClick="return confirm('Confirm delete <%= u.name %> user?');">
+                <i class="fa fa-trash"></i> Remove
+              </button>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <%= paginate @users, views_prefix: 'admin' %>
+  </div>
+  <div class="col-12 col-md-4 text-md-end">
+    <div class="resultset-info">
+      <%= resultset_info @users %>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
-  $(function() {
-      console.log( "ready!" );
-  });
+$(function() {
+  $('.bt-show-search').click(function() {
+    $('.search').slideToggle();
+  })
+})
 </script>

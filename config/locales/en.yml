@@ -33,4 +33,47 @@ en:
   hello: "Hello world"
   admin:
     users:
-      list_title: All Users
+      index:
+        title: All Users
+        subtitle: List of users authorized to use the admin
+        bt:
+          new_user: New User
+          filter: Search and Filter
+    user_filter:
+      name:
+        description: Partial or full name search
+
+  pagination_helper:
+    resultset_info_html: |
+      Showing <b>%{count}</b> records of
+      <mark><b>%{total}</b></mark> total
+      (page <b>%{current_page}</b> of <b>%{total_pages}</b>)
+
+  search:
+    info_html: |
+      Search by %{search_params} — Found <b>%{total_found}</b> results
+
+  activemodel:
+    attributes:
+      admin/user_filter:
+        name: Name
+        email: E-mail
+
+
+  # Kaminari gem
+  views:
+    pagination:
+      first: "&laquo; First"
+      last: "Last &raquo;"
+      previous: "&lsaquo; Prev"
+      next: "Next &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "No %{entry_name} found"
+          one: "Displaying <b>1</b> %{entry_name}"
+          other: "Displaying <b>all %{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <mark><b>%{total}</b></mark> in total"
