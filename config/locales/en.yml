@@ -42,6 +42,13 @@ en:
     user_filter:
       name:
         description: Partial or full name search
+    js:
+      dialog:
+        button:
+          cancel: Cancelar
+          confirm: OK
+        confirm:
+          delete_html: Confirm deletion "${name}"?
 
   pagination_helper:
     resultset_info_html: |

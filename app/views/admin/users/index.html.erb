@@ -83,12 +83,12 @@
         <td><%= u.name %></td>
         <td><%= u.email %></td>
         <td>
-          <%= form_tag(admin_user_path(u), method: "DELETE") do %>
+          <%= form_tag(admin_user_path(u), method: "DELETE", class: 'frm') do %>
             <div class="btn-group btn-group-sm">
               <a class="btn btn-primary" href="<%= edit_admin_user_path(u) %>">
                 <i class="fa fa-edit"></i> Edit
               </a>
-              <button type="submit" class="btn btn-danger" onClick="return confirm('Confirm delete <%= u.name %> user?');">
+              <button type="submit" class="btn btn-danger btn-confirm" item-name="<%= u.name %>">
                 <i class="fa fa-trash"></i> Remove
               </button>
             </div>
@@ -114,6 +114,34 @@
 $(function() {
   $('.bt-show-search').click(function() {
     $('.search').slideToggle();
+  })
+
+  $('.btn-confirm').click(function(e) {
+    e.preventDefault();
+    let $this = $(this)
+    let $form = $this.parents('form')
+    let name = $this.attr('item-name')
+    // msg will be interpolated with name via `` string
+    let msg = `<%= t 'admin.js.dialog.confirm.delete_html' %>`
+    swal({
+      text: msg,
+      buttons: true,
+      dangerMode: true,
+      buttons: {
+        cancel: {
+          text: "<%= t 'admin.js.dialog.button.cancel' %>",
+          visible: true,
+        },
+        confirm: {
+          text: "<%= t 'admin.js.dialog.button.confirm' %>",
+        }
+      }
+    })
+    .then((confirm) => {
+      if (confirm) {
+        $form.submit()
+      }
+    });
   })
 })
 </script>

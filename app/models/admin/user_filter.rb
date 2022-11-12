@@ -12,10 +12,13 @@ class Admin::UserFilter
     params = []
 
     unless name.blank? then
-      params.push "name <mark>\"#{name}\"</mark>"
+      attr_name = self.class.human_attribute_name(:name).downcase
+      params.push "#{attr_name} <mark>\"#{name}\"</mark>"
     end
+
     unless email.blank? then
-      params.push "email <mark>\"#{email}\"</mark>"
+      attr_name = self.class.human_attribute_name(:email).downcase
+      params.push "#{attr_name} <mark>\"#{email}\"</mark>"
     end
 
     return params.join(", ").html_safe
