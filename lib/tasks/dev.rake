@@ -22,7 +22,9 @@ namespace :dev do
         name: Faker::Name.unique.name,
         email: Faker::Internet.unique.email,
         password: DEFAULT_PASSWD,
-        password_confirmation: DEFAULT_PASSWD
+        password_confirmation: DEFAULT_PASSWD,
+        active: true,
+        activation_date: DateTime.now
       })
     end
 

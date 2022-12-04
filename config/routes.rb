@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  get '/activation/:id/:token',
+    to: 'user_activation#activation_form',
+    as: 'activation'
+
   namespace :admin do
     resources :users
   end

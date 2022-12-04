@@ -1,9 +1,7 @@
 
-<div class="list-header row">
-  <div class="col-md-8 col-12">
-    <h1>Edit User</h1>
-    <p>
-      Edit <b><%= @user.name %></b> user data
-    </p>
-  </div>
-</div>
+<h1><%= t 'admin.users.edit.title' %></h1>
+<p class="lead">
+  <%= t 'admin.users.edit.subtitle_html', user: @user.name %>
+</p>
+
+<%= render 'form', action: admin_user_path(@user) %>

@@ -5,13 +5,40 @@ class Admin::UsersController < Admin::AdminController
     @users = User.filter(@user_filter).page(params[:page])
   end
 
+  def new
+    @user = User.new
+  end
+
+  def create
+    @user = User.new(user_params)
+    if @user.save
+      UserActivationMailer.activate(@user).deliver
+      notice = t('admin.users.flash.created', name: @user.name, email: @user.email)
+      redirect_to admin_users_path, notice: notice
+    else
+      flash.now[:alert] = t('validation_error')
+      render :new
+    end
+  end
+
+  def update
+    @user = User.non_deleted.find_by! id: params[:id]
+    if @user.update(user_params)
+      redirect_to admin_users_path, notice: t('admin.users.flash.updated', name: @user.name)
+    else
+      flash.now[:alert] = t('validation_error')
+      render :edit
+    end
+  end
+
   def destroy
-    @user = User.find_by id: params[:id]
-    redirect_to admin_users_path, notice: "User #{@user.name} deleted"
+    @user = User.find_by! id: params[:id]
+    @user.update! deleted: true
+    redirect_to admin_users_path, notice: t('admin.users.flash.deleted', name: @user.name)
   end
 
   def edit
-    @user = User.find_by id: params[:id]
+    @user = User.non_deleted.find_by! id: params[:id]
   end
 
 private
@@ -19,5 +46,9 @@ private
     if params.has_key? :admin_user_filter
       params.require(:admin_user_filter).permit(:name, :email)
     end
+  end
+
+  def user_params
+    params.require(:user).permit(:name, :email)
   end
 end

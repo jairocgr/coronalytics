@@ -18,5 +18,14 @@ module Coronalytics
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.action_mailer.default_url_options = {
+      host: ENV["BASE_URL"]
+    }
+
+    config.action_mailer.smtp_settings = {
+      address: ENV["SMTP_HOST"],
+      port: ENV["SMTP_PORT"]
+    }
   end
 end

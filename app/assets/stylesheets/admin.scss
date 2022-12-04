@@ -27,6 +27,10 @@
       }
     }
   }
+
+  tr.deleted {
+    color: #BBB;
+  }
 }
 
 .list-header {
@@ -60,4 +64,9 @@
   a:hover {
     cursor: pointer;
   }
+}
+
+.form-disabled-field {
+  .form-label { color: #AAA; }
+  .form-text { color: #BBB; }
 }

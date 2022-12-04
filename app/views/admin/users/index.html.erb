@@ -78,20 +78,36 @@
   </thead>
   <tbody>
     <% @users.each do |u| %>
-      <tr>
+      <tr class="<%= "deleted" if u.deleted? %>">
         <td><%= u.id %></td>
-        <td><%= u.name %></td>
+        <td>
+          <%= u.name %>
+          <% unless u.active? then %>
+          <span class="badge text-bg-warning">
+            <%= t 'admin.users.badge.pending_activation' %>
+          </span>
+          <% end %>
+          <% if u.root? then %>
+          <span class="badge text-bg-dark">
+            root
+          </span>
+          <% end %>
+        </td>
         <td><%= u.email %></td>
         <td>
-          <%= form_tag(admin_user_path(u), method: "DELETE", class: 'frm') do %>
-            <div class="btn-group btn-group-sm">
-              <a class="btn btn-primary" href="<%= edit_admin_user_path(u) %>">
-                <i class="fa fa-edit"></i> Edit
-              </a>
-              <button type="submit" class="btn btn-danger btn-confirm" item-name="<%= u.name %>">
-                <i class="fa fa-trash"></i> Remove
-              </button>
-            </div>
+          <% unless u.deleted? then %>
+            <%= form_tag(admin_user_path(u), method: "DELETE", class: 'frm') do %>
+              <div class="btn-group btn-group-sm">
+                <a class="btn btn-primary" href="<%= edit_admin_user_path(u) %>">
+                  <i class="fa fa-edit"></i> Edit
+                </a>
+                <button type="submit" class="btn btn-danger btn-confirm" item-name="<%= u.name %>">
+                  <i class="fa fa-trash"></i> Remove
+                </button>
+              </div>
+            <% end %>
+          <% else %>
+            DELETED <i class="fa fa-trash"></i>
           <% end %>
         </td>
       </tr>

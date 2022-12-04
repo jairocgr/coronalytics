@@ -195,3 +195,14 @@ function notifySuccess(msg) {
     position: 'top'
   });
 }
+
+function notifyError(msg) {
+  $.notifyBar({
+    html:     msg,
+    delay:    2000,
+    // error, success, warning
+    cssClass: 'error',
+    // close:    false,
+    position: 'top'
+  });
+}

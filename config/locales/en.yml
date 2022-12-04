@@ -33,12 +33,25 @@ en:
   hello: "Hello world"
   admin:
     users:
+      flash:
+        created: User %{name} created! Email sent to %{email}
+        updated: User %{name} updated successfully
+        deleted: User %{name} deleted
+      badge:
+        pending_activation: pending activation
+      password_disclaimer: A e-mail will be sent to the user, password will be set before the first login.
       index:
         title: All Users
         subtitle: List of users authorized to use the admin
         bt:
           new_user: New User
           filter: Search and Filter
+      new:
+        title: New Users
+        subtitle: Add new user form
+      edit:
+        title: Edit User
+        subtitle_html: Edit <b>%{user}</b> user data
     user_filter:
       name:
         description: Partial or full name search
@@ -49,6 +62,16 @@ en:
           confirm: OK
         confirm:
           delete_html: Confirm deletion "${name}"?
+
+  validation_error: Invalid fields!
+
+  user_activation_mailer:
+    activate:
+      subject: Activate user (first access)
+      title: Welcome to Coronalytics %{name}
+      text_html: Please activate your account by clicking in this %{link}.
+      thanks: Thank you,
+      footer: The Coronalytics Team"
 
   pagination_helper:
     resultset_info_html: |
@@ -66,6 +89,10 @@ en:
         name: Name
         email: E-mail
 
+  activerecord:
+    attributes:
+      user:
+        email: E-mail
 
   # Kaminari gem
   views:

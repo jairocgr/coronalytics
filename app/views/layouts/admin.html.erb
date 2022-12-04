@@ -34,6 +34,9 @@
             <% if type == "notice" then %>
               notifySuccess("<%= msg %>")
             <% end %>
+            <% if type == "alert" then %>
+              notifyError("<%= msg %>")
+            <% end %>
           <% end %>
       });
     </script>

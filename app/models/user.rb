@@ -1,5 +1,8 @@
 class User < ApplicationRecord
 
+  scope :non_deleted, -> { where(deleted: false) }
+  scope :pending_activation, -> { where(active: false) }
+
   validates :name, presence: true, length: { in: 2..256 }
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
@@ -9,7 +12,14 @@ class User < ApplicationRecord
     uniqueness: true,
     format: { with: VALID_EMAIL_REGEX }
 
-  has_secure_password
+  has_secure_password validations: false
+  validates :password, confirmation: true
+
+  before_save :set_activation_token
+
+  def root?
+    id == 1
+  end
 
   def self.filter(filter)
     if filter.name.present? then
@@ -26,4 +36,15 @@ class User < ApplicationRecord
 
     return name_like.and(email_like)
   end
+
+private
+
+  def set_activation_token
+    self.activation_token = gen_token
+  end
+
+  def gen_token
+    SecureRandom.alphanumeric(16).upcase
+  end
+
 end
