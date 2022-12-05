@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   match '/activation/:id/:token', to: 'user_activation#activate', via: [ :post, :patch, :put ]
 
   namespace :admin do
+    get '/login', to: 'login#form'
+    post '/login', to: 'login#authenticate'
+    match '/logout', to: 'login#logout', via: :all
+    root 'dashboard#index'
     resources :users
   end
 

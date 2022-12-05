@@ -17,7 +17,7 @@ class UserActivationController < ApplicationController
 
     if @user.update(password_params)
       @user.activate!
-      redirect_to admin_users_path, notice: "User #{@user.name} activated!"
+      redirect_to admin_login_path, notice: "User #{@user.name} activated!"
     else
       flash.now[:alert] = t('validation_error')
       render :activation_form

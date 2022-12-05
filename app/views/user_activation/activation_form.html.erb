@@ -2,7 +2,7 @@
 <main class="main mb-4">
   <div class="container">
 
-    <h1><%= t 'user_activation.form.title' %><%= @user.errors.size %></h1>
+    <h1><%= t 'user_activation.form.title' %></h1>
     <p class="lead">
       <%= t 'user_activation.form.subtitle_html', token: @user.activation_token %>
     </p>
@@ -43,10 +43,10 @@
       $(function() {
           <% flash.each do |type, msg| %>
             <% if type == "notice" then %>
-              notifySuccess("<%= msg %>")
+              notifySuccess("<%= msg.html_safe %>")
             <% end %>
             <% if type == "alert" then %>
-              notifyError("<%= msg %>")
+              notifyError("<%= msg.html_safe %>")
             <% end %>
           <% end %>
       });

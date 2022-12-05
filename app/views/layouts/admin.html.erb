@@ -32,10 +32,10 @@
       $(function() {
           <% flash.each do |type, msg| %>
             <% if type == "notice" then %>
-              notifySuccess("<%= msg %>")
+              notifySuccess("<%= msg.html_safe %>")
             <% end %>
             <% if type == "alert" then %>
-              notifyError("<%= msg %>")
+              notifyError("<%= msg.html_safe %>")
             <% end %>
           <% end %>
       });

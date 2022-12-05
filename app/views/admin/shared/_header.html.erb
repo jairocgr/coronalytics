@@ -11,19 +11,35 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <a class="nav-link" href="<%= admin_root_path %>">
+              Home
+            </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled">Disabled</a>
+            <a class="nav-link" href="<%= admin_users_path %>">
+              <%= t 'menu.users' %>
+            </a>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+
+        <div class="d-flex">
+          <div class="dropdown">
+            <a class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-user"></i> &nbsp;
+              <%= current_user.name %>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#"><%= t 'menu.profile' %></a></li>
+              <li><a class="dropdown-item" href="#"><%= t 'menu.change_password' %></a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li>
+                <a class="dropdown-item" href="<%= admin_logout_path %>">
+                  <i class="fa fa-power-off"></i> Logout
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </nav>

@@ -31,6 +31,12 @@
 
 en:
   hello: "Hello world"
+
+  menu:
+    users: Users
+    change_password: Change Password
+    profile: Your profile
+
   admin:
     users:
       flash:
@@ -62,6 +68,10 @@ en:
           confirm: OK
         confirm:
           delete_html: Confirm deletion "${name}"?
+    login:
+      form:
+        title: Login
+        subtitle: Access your Coronalytics account
 
   validation_error: Invalid fields!
 
@@ -93,6 +103,9 @@ en:
       admin/user_filter:
         name: Name
         email: E-mail
+      admin/credential:
+        login: Login
+        password: Password
 
   activerecord:
     attributes:

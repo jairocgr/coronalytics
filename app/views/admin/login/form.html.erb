@@ -1,0 +1,57 @@
+
+<main class="main mb-4">
+  <div class="container">
+
+    <h1><%= t 'admin.login.form.title' %></h1>
+    <p class="lead">
+      <%= t 'admin.login.form.subtitle' %>
+    </p>
+
+    <br/>
+
+    <div class="row">
+      <div class="col col-md-5 col-12">
+
+        <% if @credential.errors.any? %>
+          <div class="alert alert-danger">
+            <p>Validation errors</p>
+            <ul>
+              <% @credential.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= form_for(@credential, url: admin_login_path) do |f| %>
+          <div class="mb-3">
+            <%= f.label :login, class: 'form-label' %>
+            <%= f.text_field :login, class: 'form-control', placeholder: 'you@email.com' %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :password, class: 'form-label' %>
+            <%= f.password_field :password, class: 'form-control' %>
+          </div>
+
+          <%= f.submit "Login", class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+      $(function() {
+        <% flash.each do |type, msg| %>
+          <% if type == "notice" then %>
+            notifySuccess("<%= msg.html_safe %>")
+          <% end %>
+          <% if type == "alert" then %>
+            notifyError("<%= msg.html_safe %>")
+          <% end %>
+        <% end %>
+      });
+    </script>
+
+
+  </div>
+</main>

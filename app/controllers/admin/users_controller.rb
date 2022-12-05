@@ -1,5 +1,7 @@
 class Admin::UsersController < Admin::AdminController
 
+  include AuthenticatedController
+
   def index
     @user_filter = Admin::UserFilter.new(filter_params)
     @users = User.filter(@user_filter).page(params[:page])

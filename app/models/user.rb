@@ -2,6 +2,7 @@ class User < ApplicationRecord
 
   scope :non_deleted, -> { where(deleted: false) }
   scope :pending_activation, -> { where(active: false) }
+  scope :allowed_to_login, -> { non_deleted.where(active: true) }
 
   validates :name, presence: true, length: { in: 2..256 }
 
@@ -42,6 +43,18 @@ class User < ApplicationRecord
     end
 
     return name_like.and(email_like)
+  end
+
+  def self.auth(credential)
+    user = User.allowed_to_login.find_by(email: credential.login)
+
+    if user.present?
+      if user.authenticate credential.password then
+        return user
+      end
+    end
+
+    return nil
   end
 
 private
