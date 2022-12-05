@@ -1,0 +1,2 @@
+class Srag < ApplicationRecord
+end

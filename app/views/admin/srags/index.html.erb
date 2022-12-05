@@ -1,0 +1,50 @@
+
+<div class="list-header row">
+  <div class="col-md-9 col-12">
+    <h1><%= t 'admin.srags.index.title' %></h1>
+    <p class="lead">
+      <%= t('admin.srags.index.subtitle_html', source: link_to("opendatasus.saude.gov.br", "https://opendatasus.saude.gov.br")) %>
+    </p>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Year</th>
+      <th>Release</th>
+      <th>URL</th>
+      <th>Status</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @srags.each do |s| %>
+      <tr>
+        <td><%= s.year %></td>
+        <td><%= s.release_date %></td>
+        <td>
+          <code>
+            <small>
+              <%= s.url %>
+            </small>
+          </code>
+        </td>
+        <td>
+          <em>CREATED</em>
+        </td>
+        <td>
+          <a class="btn btn-primary btn-sm">
+            Process File  <i class="fa fa-download"></i>
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <%= paginate @srags, views_prefix: 'admin' %>
+  </div>
+</div>

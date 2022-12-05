@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     root 'dashboard#index'
     resources :users
     resources :vaccination_numbers, only: [ :index ]
+    resources :srags
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

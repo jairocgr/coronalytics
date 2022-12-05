@@ -37,12 +37,17 @@ en:
     change_password: Change Password
     profile: Your profile
     vaccination_numbers: Vaccination Numbers
+    srags: SRAG
 
   admin:
     vaccination_numbers:
       index:
         title: Vaccination Numbers
         subtitle_html: Vaccination per month (source %{source})
+    srags:
+      index:
+        title: SRAG Files
+        subtitle_html: Raw data from Brazillian Health Ministry (source %{source})
     users:
       flash:
         created: User %{name} created! Email sent to %{email}
