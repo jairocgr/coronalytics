@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_04_053405) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_05_063347) do
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -22,6 +22,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_04_053405) do
     t.datetime "activation_date"
     t.string "activation_token"
     t.index ["email"], name: "index_users_on_email", unique: true
+  end
+
+  create_table "vaccination_numbers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "year", null: false
+    t.integer "month", null: false
+    t.decimal "one_dose", precision: 10, default: "0", null: false
+    t.decimal "two_doses", precision: 10, default: "0", null: false
+    t.decimal "boosted", precision: 10, default: "0", null: false
+    t.string "country", limit: 3, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["year", "month"], name: "index_vaccination_numbers_on_year_and_month", unique: true
   end
 
 end

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  year: 1
+  month: 1
+  one_dose: 9.99
+  two_doses: 9.99
+  boosted: 9.99
+
+two:
+  year: 1
+  month: 1
+  one_dose: 9.99
+  two_doses: 9.99
+  boosted: 9.99
