@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
 
-  get '/activation/:id/:token',
-    to: 'user_activation#activation_form',
-    as: 'activation'
+  get   '/activation/:id/:token', to: 'user_activation#activation_form', as: 'activation'
+  match '/activation/:id/:token', to: 'user_activation#activate', via: [ :post, :patch, :put ]
 
   namespace :admin do
     resources :users

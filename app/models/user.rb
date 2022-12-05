@@ -13,12 +13,19 @@ class User < ApplicationRecord
     format: { with: VALID_EMAIL_REGEX }
 
   has_secure_password validations: false
+
+  # Password must be at leas 4 char long (only if present)
+  validates :password, length: { in: 4..128 }, if: -> { password.present? }
   validates :password, confirmation: true
 
-  before_save :set_activation_token
+  before_create :set_activation_token
 
   def root?
     id == 1
+  end
+
+  def activate!
+    update! active: true, activation_date: DateTime.now
   end
 
   def self.filter(filter)

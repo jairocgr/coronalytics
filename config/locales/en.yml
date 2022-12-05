@@ -65,13 +65,18 @@ en:
 
   validation_error: Invalid fields!
 
+  user_activation:
+    form:
+      title: User activation
+      subtitle_html: Active your token <code>%{token}</code> and set your password.
+
   user_activation_mailer:
     activate:
       subject: Activate user (first access)
       title: Welcome to Coronalytics %{name}
       text_html: Please activate your account by clicking in this %{link}.
       thanks: Thank you,
-      footer: The Coronalytics Team"
+      footer: The Coronalytics Team
 
   pagination_helper:
     resultset_info_html: |

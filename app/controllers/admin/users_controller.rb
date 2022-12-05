@@ -10,14 +10,16 @@ class Admin::UsersController < Admin::AdminController
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      UserActivationMailer.activate(@user).deliver
-      notice = t('admin.users.flash.created', name: @user.name, email: @user.email)
-      redirect_to admin_users_path, notice: notice
-    else
-      flash.now[:alert] = t('validation_error')
-      render :new
+    User.transaction do
+      @user = User.new(user_params)
+      if @user.save
+        UserActivationMailer.activate(@user).deliver
+        notice = t('admin.users.flash.created', name: @user.name, email: @user.email)
+        redirect_to admin_users_path, notice: notice
+      else
+        flash.now[:alert] = t('validation_error')
+        render :new
+      end
     end
   end
 

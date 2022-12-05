@@ -1,11 +1,29 @@
 
-
 <main class="main mb-4">
   <div class="container">
+
+    <h1><%= t 'user_activation.form.title' %><%= @user.errors.size %></h1>
+    <p class="lead">
+      <%= t 'user_activation.form.subtitle_html', token: @user.activation_token %>
+    </p>
+
+    <br/>
+
     <div class="row">
       <div class="col col-md-5 col-12">
-        <%= form_for(@user, url: activation_path(id: @user.id, token: @user.activation_token)) do |f| %>
 
+        <% if @user.errors.any? %>
+          <div class="alert alert-danger">
+            <p>Validation errors</p>
+            <ul>
+              <% @user.errors.each do |error| %>
+                <li><%= error.full_message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= form_for(@user, url: activation_path(id: @user.id, token: @user.activation_token)) do |f| %>
           <div class="mb-3">
             <%= f.label :password, class: 'form-label' %>
             <%= f.password_field :password, class: 'form-control' %>
@@ -19,5 +37,21 @@
         <% end %>
       </div>
     </div>
+
+
+    <script type="text/javascript">
+      $(function() {
+          <% flash.each do |type, msg| %>
+            <% if type == "notice" then %>
+              notifySuccess("<%= msg %>")
+            <% end %>
+            <% if type == "alert" then %>
+              notifyError("<%= msg %>")
+            <% end %>
+          <% end %>
+      });
+    </script>
+
+
   </div>
 </main>
