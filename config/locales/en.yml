@@ -36,8 +36,13 @@ en:
     users: Users
     change_password: Change Password
     profile: Your profile
+    vaccination_numbers: Vaccination Numbers
 
   admin:
+    vaccination_numbers:
+      index:
+        title: Vaccination Numbers
+        subtitle_html: Vaccination per month (source %{source})
     users:
       flash:
         created: User %{name} created! Email sent to %{email}

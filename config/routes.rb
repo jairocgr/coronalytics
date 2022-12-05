@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     match '/logout', to: 'login#logout', via: :all
     root 'dashboard#index'
     resources :users
+    resources :vaccination_numbers, only: [ :index ]
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

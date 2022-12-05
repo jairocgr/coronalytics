@@ -1,0 +1,36 @@
+
+<div class="list-header row">
+  <div class="col-md-8 col-12">
+    <h1><%= t 'admin.vaccination_numbers.index.title' %></h1>
+    <p class="lead">
+      <%= t('admin.vaccination_numbers.index.subtitle_html', source: link_to("https://ourworldindata.org/coronavirus", "https://ourworldindata.org/coronavirus")) %>
+    </p>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Year</th>
+      <th>Month</th>
+      <th>One Dose %</th>
+      <th>Two Doses</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @numbers.each do |n| %>
+      <tr>
+        <td><%= n.year %></td>
+        <td><%= n.month %></td>
+        <td><%= n.one_dose %></td>
+        <td><%= n.two_doses %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <%= paginate @numbers, views_prefix: 'admin' %>
+  </div>
+</div>
