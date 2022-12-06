@@ -11,6 +11,7 @@ Rails.application.routes.draw do
     resources :users
     resources :vaccination_numbers, only: [ :index ]
     resources :srags
+    post '/process/srag/:id', to: 'srags#ingest', as: 'process_srag'
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

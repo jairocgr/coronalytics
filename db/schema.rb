@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_05_081051) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_06_072043) do
   create_table "srags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "year"
     t.date "release_date"
     t.string "url"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status", limit: 24, default: "CREATED", null: false
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
