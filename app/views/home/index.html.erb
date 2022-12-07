@@ -1,0 +1,101 @@
+
+
+<script type="text/javascript">
+  // const months = [
+  //   "January",
+  //   "February",
+  //   "March",
+  //   "April",
+  //   "May",
+  //   "June",
+  //   "July",
+  //   "August",
+  //   "September",
+  //   "October",
+  //   "November",
+  //   "December"
+  // ];
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec"
+  ];
+</script>
+
+<div class="row">
+  <div class="col col-md-8 col-12">
+    <div class="main-title">coronalytics <i class="fa fa-pie-chart"></i></div>
+
+    <h1>SRAG Data Analysis</h1>
+    <p class="lead">
+      A basic quantitative analysis was made of the Brazilian Health Ministry raw <code>SRAG</code> files
+      with hope of gaining insight about how the vaccination program is doing overall.
+    </p>
+
+    <br/>
+
+    <% [2021].each do |year| %>
+    <div class="year">
+      <h2 class="title">Year <%= year %></h2>
+      <p>Duis aute irure dolor in reprehenderit in voluptate velit</p>
+
+
+      <h5>Deaths Month by Month</h5>
+      <div id="deaths-<%= year %>" class="graph-canvas"></div>
+      <script type="text/javascript">
+        new Morris.Line({
+         element: 'deaths-<%= year %>',
+         xkey: 'year',
+         ykeys: ['total', 'vaccinated', 'unvaccinated', 'undef' ],
+         labels: ['Total Deaths', "Vaccinated", "Unvaccinated", "Undefined"],
+         xLabels: 'month',
+         data: [
+           <% @report.deaths(year).each do |record| %>
+            { year: '<%= year %>-<%= record[:month] %>', total: <%= record[:total] %>, vaccinated: <%= record[:vaccinated] %>, unvaccinated: <%= record[:unvaccinated] %>, undef: <%= record[:undef] %> },
+           <% end %>
+         ],
+         xLabelFormat: function(x) {
+           return months[x.getMonth()]
+         }
+       });
+      </script>
+
+      <h5>Vaccinated population Month by Month</h5>
+      <div id="vaccination-<%= year %>" class="graph-canvas"></div>
+      <script type="text/javascript">
+        new Morris.Line({
+         element: 'vaccination-<%= year %>',
+         xkey: 'year',
+         ykeys: ['one_dose', 'two_doses'],
+         labels: ['% one dose', '% two shots'],
+         xLabels: 'month',
+         data: [
+           <% @report.vaccination(year).each do |record| %>
+            { year: '<%= year %>-<%= record[:month] %>', one_dose: <%= record[:one_dose] %>, two_doses: <%= record[:two_doses] %> },
+           <% end %>
+         ],
+         xLabelFormat: function(x) {
+           return months[x.getMonth()]
+         }
+       });
+      </script>
+
+    </div>
+    <% end %>
+
+    <br/>
+    <br/>
+    <br/>
+
+  </div>
+</div>

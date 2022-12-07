@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coronalytics SRAG</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <script src="https://use.fontawesome.com/917347a00c.js"></script>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "site", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "bootstrap" %>
+    <%= javascript_include_tag "jquery" %>
+    <%= javascript_include_tag "notifybar" %>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+  </head>
+
+  <body>
+    <main class="main mb-4">
+      <div class="container">
+
+        <%= yield %>
+
+        <script type="text/javascript">
+          $(function() {
+              <% flash.each do |type, msg| %>
+                <% if type == "notice" then %>
+                  notifySuccess("<%= msg.html_safe %>")
+                <% end %>
+                <% if type == "alert" then %>
+                  notifyError("<%= msg.html_safe %>")
+                <% end %>
+              <% end %>
+          });
+        </script>
+
+      </div>
+    </main>
+  </body>
+</html>
