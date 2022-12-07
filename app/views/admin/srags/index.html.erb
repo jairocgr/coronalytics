@@ -29,6 +29,11 @@
               <%= s.url %>
             </small>
           </code>
+          <% if s.downloaded? then %>
+            <span class="badge text-bg-success">
+              downloaded
+            </span>
+          <% end %>
         </td>
         <td>
           <em><%= s.status %></em>
@@ -39,7 +44,7 @@
               <a class="btn btn-primary" href="#">
                 <i class="fa fa-edit"></i> Edit
               </a>
-              <button type="submit" class="btn btn-dark" <%= 'disabled' if s.status != 'CREATED' %>>
+              <button type="submit" class="btn btn-dark" <%= 'disabled' unless s.status.in? ['CREATED', 'ERROR'] %>>
                 Process File  <i class="fa fa-download"></i>
               </button>
             </div>

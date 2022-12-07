@@ -3,7 +3,7 @@ class Admin::SragsController < Admin::AdminController
   include AuthenticatedController
 
   def ingest
-    @srag = Srag.find_by!(params[:id])
+    @srag = Srag.find_by! id: params[:id]
     IngestSragFileJob.perform_later(@srag)
     @srag.update! status: 'SCHEDULED'
   end
