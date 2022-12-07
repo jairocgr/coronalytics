@@ -174,10 +174,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_07_082603) do
     t.string "fab_cov_1", limit: 256
     t.string "fab_cov_2", limit: 256
     t.string "fab_covref", limit: 256
-    t.string "lote_ref", limit: 32
+    t.string "lote_ref", limit: 128
     t.string "lab_pr_cov"
-    t.string "lote_1_cov", limit: 32
-    t.string "lote_2_cov", limit: 32
+    t.string "lote_1_cov", limit: 128
+    t.string "lote_2_cov", limit: 128
     t.integer "fnt_in_cov"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
