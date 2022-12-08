@@ -9,9 +9,38 @@
 
 .year {
   margin-bottom: 24px;
+  width: 80%;
 }
 
-.graph-canvas {
-  height: 250px;
-  width: 80%;
+.section {
+  margin-bottom: 32px;
+
+  .title {
+    i {
+      font-family: monospace;
+      font-size: 14px;
+      font-weight: bold;
+      color: #999;
+      display: inline-block;
+      margin-left: 6px;
+      position: relative;
+      top: -3px;
+      background: #EEE;
+    }
+  }
+
+  .graph-canvas {
+    height: 210px;
+    margin-bottom: 6px;
+  }
+
+  .table {
+    th, td {
+      font-size: 13px;
+    }
+
+    tbody td {
+      font-family: monospace;
+    }
+  }
 }

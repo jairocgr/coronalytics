@@ -42,55 +42,175 @@
       with hope of gaining insight about how the vaccination program is doing overall.
     </p>
 
+    <p class="lead">
+      All the original SRAG files are availiable at <a href="https://opendatasus.saude.gov.br">https://opendatasus.saude.gov.br</a>
+    </p>
+
+    <br/>
     <br/>
 
     <% [2021].each do |year| %>
     <div class="year">
       <h2 class="title">Year <%= year %></h2>
-      <p>Duis aute irure dolor in reprehenderit in voluptate velit</p>
 
+      <% srag = get_srag_from(year) %>
+      <% deaths = @report.deaths(year) %>
+      <% hospitalizations = @report.hospitalizations(year) %>
 
-      <h5>Deaths Month by Month</h5>
-      <div id="deaths-<%= year %>" class="graph-canvas"></div>
-      <script type="text/javascript">
-        new Morris.Line({
-         element: 'deaths-<%= year %>',
-         xkey: 'year',
-         ykeys: ['total', 'vaccinated', 'unvaccinated', 'undef' ],
-         labels: ['Total Deaths', "Vaccinated", "Unvaccinated", "Undefined"],
-         xLabels: 'month',
-         data: [
-           <% @report.deaths(year).each do |record| %>
-            { year: '<%= year %>-<%= record[:month] %>', total: <%= record[:total] %>, vaccinated: <%= record[:vaccinated] %>, unvaccinated: <%= record[:unvaccinated] %>, undef: <%= record[:undef] %> },
-           <% end %>
-         ],
-         xLabelFormat: function(x) {
-           return months[x.getMonth()]
-         }
-       });
-      </script>
+      <p>
+        Data from the SRAG file <code><%= srag.file_name %></code> published in <b><%= srag.release_date.to_formatted_s(:long) %></b>
+      </p>
 
-      <h5>Vaccinated population Month by Month</h5>
-      <div id="vaccination-<%= year %>" class="graph-canvas"></div>
-      <script type="text/javascript">
-        new Morris.Line({
-         element: 'vaccination-<%= year %>',
-         xkey: 'year',
-         ykeys: ['one_dose', 'two_doses'],
-         labels: ['% one dose', '% two shots'],
-         xLabels: 'month',
-         data: [
-           <% @report.vaccination(year).each do |record| %>
-            { year: '<%= year %>-<%= record[:month] %>', one_dose: <%= record[:one_dose] %>, two_doses: <%= record[:two_doses] %> },
-           <% end %>
-         ],
-         xLabelFormat: function(x) {
-           return months[x.getMonth()]
-         }
-       });
-      </script>
+      <div class="section">
+        <h5 class="title">Deaths Data (Month by Month) <i><%= year %></i></h5>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Month</th>
+              <th>Total Deaths</th>
+              <th>Vaccinated</th>
+              <th>Unvaccinated</th>
+              <th>Undefined Vaccination Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% deaths.each do |record| %>
+              <tr>
+                <td><%= month_name(record[:month]) %></td>
+                <td><%= record[:total] %></td>
+                <td><%= record[:vaccinated] %> (<%= record[:vaccinated_percentage] %>%)</td>
+                <td><%= record[:unvaccinated] %> (<%= record[:unvaccinated_percentage] %>%)</td>
+                <td><%= record[:undef] %> (<%= record[:undef_percentage] %>%)</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
 
-    </div>
+      <div class="section">
+        <h5 class="title">Deaths (Month by Month) <i><%= year %></i></h5>
+        <div id="deaths-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'deaths-<%= year %>',
+           xkey: 'month',
+           ykeys: ['total' ],
+           labels: ['Total Deaths' ],
+           xLabels: 'month',
+           data: [
+             <% deaths.each do |record| %>
+              { month: '<%= year %>-<%= record[:month] %>', total: <%= record[:total] %> },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           }
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Vaccinated Population (Month by Month) <i><%= year %></i></h5>
+        <p>Source <a href="http://ourworldindata.org/coronavirus">http://ourworldindata.org/coronavirus</a></p>
+        <div id="vaccination-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'vaccination-<%= year %>',
+           xkey: 'year',
+           ykeys: ['one_dose', 'two_doses'],
+           labels: ['% one dose', '% two shots'],
+           xLabels: 'month',
+           data: [
+             <% @report.vaccination(year).each do |record| %>
+              { year: '<%= year %>-<%= record[:month] %>', one_dose: <%= record[:one_dose] %>, two_doses: <%= record[:two_doses] %> },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           }
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Deaths (Vaccinated vs Unvaccinated) <i><%= year %></i></h5>
+        <div id="deaths-vaccinated-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'deaths-vaccinated-<%= year %>',
+           xkey: 'month',
+           ykeys: ['vaccinated', 'unvaccinated', ],
+           labels: ["Vaccinated", "Unvaccinated", ],
+           xLabels: 'month',
+           data: [
+             <% deaths.each do |record| %>
+              { month: '<%= year %>-<%= record[:month] %>', vaccinated: <%= record[:vaccinated] %>, unvaccinated: <%= record[:unvaccinated] %>, },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           }
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Percentage of Deaths (Vaccinated vs Unvaccinated) <i><%= year %></i></h5>
+        <div id="deaths-percentage-vaccinated-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'deaths-percentage-vaccinated-<%= year %>',
+           xkey: 'month',
+           ykeys: ['vaccinated', 'unvaccinated', ],
+           labels: ["Vaccinated", "Unvaccinated", ],
+           xLabels: 'month',
+           data: [
+             <% deaths.each do |record| %>
+              { month: '<%= year %>-<%= record[:month] %>', vaccinated: <%= record[:vaccinated_percentage] %>, unvaccinated: <%= record[:unvaccinated_percentage] %>, },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           }
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Hospitalization and ICU (Month by Month) <i><%= year %></i></h5>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Month</th>
+              <th><b>Hospitalization</b></th>
+              <th>Vac</th>
+              <th>Unvac/th>
+              <th>Undef</th>
+              <th><b>ICU</b></th>
+              <th>Vac</th>
+              <th>Unvac</th>
+              <th>Undef</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% hospitalizations.each do |record| %>
+              <tr>
+                <td><%= month_name(record[:month]) %></td>
+                <td><b><%= record[:hospitalizations] %></b></td>
+                <td><%= record[:hospitalizations_vaccinated] %> (<%= record[:hospitalizations_vaccinated_percentage] %>%)</td>
+                <td><%= record[:hospitalizations_unvaccinated] %> (<%= record[:hospitalizations_unvaccinated_percentage] %>%)</td>
+                <td><%= record[:hospitalizations_undef] %> (<%= record[:hospitalizations_undef_percentage] %>%)</td>
+                <td><b><%= record[:icus] %></b></td>
+                <td><%= record[:icus_vaccinated] %> (<%= record[:icus_vaccinated_percentage] %>%)</td>
+                <td><%= record[:icus_unvaccinated] %> (<%= record[:icus_unvaccinated_percentage] %>%)</td>
+                <td><%= record[:icus_undef] %> (<%= record[:icus_undef_percentage] %>%)</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+    </div> <!-- END OF YEAR BLOCK !-->
     <% end %>
 
     <br/>
