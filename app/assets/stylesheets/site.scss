@@ -13,7 +13,7 @@
 }
 
 .section {
-  margin-bottom: 32px;
+  margin-bottom: 42px;
 
   .title {
     i {
@@ -30,17 +30,22 @@
   }
 
   .graph-canvas {
-    height: 210px;
+    height: 200px;
     margin-bottom: 6px;
   }
 
   .table {
     th, td {
-      font-size: 13px;
+      font-size: 12px;
     }
 
     tbody td {
       font-family: monospace;
+    }
+
+    .fade {
+      opacity: 1;
+      color: #777;
     }
   }
 }

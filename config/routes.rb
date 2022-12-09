@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :vaccination_numbers, only: [ :index ]
     resources :srags
     post '/process/srag/:id', to: 'srags#ingest', as: 'process_srag'
+    get '/process/gen-report/:id', to: 'srags#gen_report', as: 'gen_report_srag'
   end
 
   root "home#index"

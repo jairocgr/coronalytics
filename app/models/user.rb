@@ -47,7 +47,6 @@ class User < ApplicationRecord
 
   def self.auth(credential)
     user = User.allowed_to_login.find_by(email: credential.login)
-
     if user.present?
       if user.authenticate credential.password then
         return user

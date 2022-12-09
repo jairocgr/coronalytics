@@ -47,6 +47,9 @@
               <button type="submit" class="btn btn-dark" <%= 'disabled' unless s.status.in? ['CREATED', 'ERROR'] %>>
                 Process File  <i class="fa fa-download"></i>
               </button>
+              <a class="btn btn-success" href="<%= admin_gen_report_srag_path(s) %>">
+                <i class="fa fa-bar-chart"></i> Report
+              </a>
             </div>
           <% end %>
         </td>

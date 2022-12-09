@@ -48,14 +48,19 @@
 
     <br/>
     <br/>
+  </div>
+</div>
 
-    <% [2021].each do |year| %>
+<div class="row">
+  <% [2021, 2022].each do |year| %>
+  <div class="col col-md-6 col-12">
     <div class="year">
       <h2 class="title">Year <%= year %></h2>
 
       <% srag = get_srag_from(year) %>
-      <% deaths = @report.deaths(year) %>
-      <% hospitalizations = @report.hospitalizations(year) %>
+      <% deaths = srag.report[:deaths] %>
+      <% hospitalizations = srag.report[:hospitalizations] %>
+      <% icus = srag.report[:icus] %>
 
       <p>
         Data from the SRAG file <code><%= srag.file_name %></code> published in <b><%= srag.release_date.to_formatted_s(:long) %></b>
@@ -70,17 +75,17 @@
               <th>Total Deaths</th>
               <th>Vaccinated</th>
               <th>Unvaccinated</th>
-              <th>Undefined Vaccination Status</th>
+              <th class="fade">Undef. Vaccination</th>
             </tr>
           </thead>
           <tbody>
             <% deaths.each do |record| %>
-              <tr>
+              <tr class="<%= 'fade' unless srag.valid_month? record[:month]%>">
                 <td><%= month_name(record[:month]) %></td>
                 <td><%= record[:total] %></td>
                 <td><%= record[:vaccinated] %> (<%= record[:vaccinated_percentage] %>%)</td>
                 <td><%= record[:unvaccinated] %> (<%= record[:unvaccinated_percentage] %>%)</td>
-                <td><%= record[:undef] %> (<%= record[:undef_percentage] %>%)</td>
+                <td class="fade"><%= record[:undef] %> (<%= record[:undef_percentage] %>%)</td>
               </tr>
             <% end %>
           </tbody>
@@ -99,6 +104,7 @@
            xLabels: 'month',
            data: [
              <% deaths.each do |record| %>
+              <% next unless srag.valid_month? record[:month] %>
               { month: '<%= year %>-<%= record[:month] %>', total: <%= record[:total] %> },
              <% end %>
            ],
@@ -112,6 +118,26 @@
       <div class="section">
         <h5 class="title">Vaccinated Population (Month by Month) <i><%= year %></i></h5>
         <p>Source <a href="http://ourworldindata.org/coronavirus">http://ourworldindata.org/coronavirus</a></p>
+
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Month</th>
+              <th>One Dose</th>
+              <th>Two Shots</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @report.vaccination(year).each do |record| %>
+              <tr>
+                <td><%= month_name(record[:month]) %></td>
+                <td><%= record[:one_dose] %>%</td>
+                <td><%= record[:two_doses] %>%</td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+
         <div id="vaccination-<%= year %>" class="graph-canvas"></div>
         <script type="text/javascript">
           new Morris.Line({
@@ -122,12 +148,14 @@
            xLabels: 'month',
            data: [
              <% @report.vaccination(year).each do |record| %>
+              <% next unless srag.valid_month? record[:month] %>
               { year: '<%= year %>-<%= record[:month] %>', one_dose: <%= record[:one_dose] %>, two_doses: <%= record[:two_doses] %> },
              <% end %>
            ],
            xLabelFormat: function(x) {
              return months[x.getMonth()]
-           }
+           },
+           yLabelFormat: function (y) { return y.toString() + '%' },
          });
         </script>
       </div>
@@ -144,6 +172,7 @@
            xLabels: 'month',
            data: [
              <% deaths.each do |record| %>
+              <% next unless srag.valid_month? record[:month] %>
               { month: '<%= year %>-<%= record[:month] %>', vaccinated: <%= record[:vaccinated] %>, unvaccinated: <%= record[:unvaccinated] %>, },
              <% end %>
            ],
@@ -166,56 +195,123 @@
            xLabels: 'month',
            data: [
              <% deaths.each do |record| %>
+              <% next unless srag.valid_month? record[:month] %>
               { month: '<%= year %>-<%= record[:month] %>', vaccinated: <%= record[:vaccinated_percentage] %>, unvaccinated: <%= record[:unvaccinated_percentage] %>, },
              <% end %>
            ],
            xLabelFormat: function(x) {
              return months[x.getMonth()]
-           }
+           },
+           yLabelFormat: function (y) { return y.toString() + '%' },
          });
         </script>
       </div>
 
       <div class="section">
-        <h5 class="title">Hospitalization and ICU (Month by Month) <i><%= year %></i></h5>
+        <h5 class="title">Hospitalization (Month by Month) <i><%= year %></i></h5>
         <table class="table table-sm">
           <thead class="table-light">
             <tr>
               <th>Month</th>
               <th><b>Hospitalization</b></th>
-              <th>Vac</th>
-              <th>Unvac/th>
-              <th>Undef</th>
-              <th><b>ICU</b></th>
-              <th>Vac</th>
-              <th>Unvac</th>
-              <th>Undef</th>
+              <th>Vaccinated</th>
+              <th>Unvaccinated</th>
+              <th class="fade">Undef. Vaccination</th>
             </tr>
           </thead>
           <tbody>
             <% hospitalizations.each do |record| %>
-              <tr>
+              <tr class="<%= 'fade' unless srag.valid_month? record[:month]%>">
                 <td><%= month_name(record[:month]) %></td>
-                <td><b><%= record[:hospitalizations] %></b></td>
-                <td><%= record[:hospitalizations_vaccinated] %> (<%= record[:hospitalizations_vaccinated_percentage] %>%)</td>
-                <td><%= record[:hospitalizations_unvaccinated] %> (<%= record[:hospitalizations_unvaccinated_percentage] %>%)</td>
-                <td><%= record[:hospitalizations_undef] %> (<%= record[:hospitalizations_undef_percentage] %>%)</td>
-                <td><b><%= record[:icus] %></b></td>
-                <td><%= record[:icus_vaccinated] %> (<%= record[:icus_vaccinated_percentage] %>%)</td>
-                <td><%= record[:icus_unvaccinated] %> (<%= record[:icus_unvaccinated_percentage] %>%)</td>
-                <td><%= record[:icus_undef] %> (<%= record[:icus_undef_percentage] %>%)</td>
+                <td><b><%= record[:total] %></b></td>
+                <td><%= record[:vaccinated] %> <small>(<%= record[:vaccinated_percentage] %>%)</small></td>
+                <td><%= record[:unvaccinated] %> <small>(<%= record[:unvaccinated_percentage] %>%)</small></td>
+                <td class="fade"><%= record[:undef] %> <small>(<%= record[:undef_percentage] %>%)</small></td>
               </tr>
             <% end %>
           </tbody>
         </table>
       </div>
 
+      <div class="section">
+        <h5 class="title">Percentage of Hospitalization (Vaccinated vs Unvaccinated) <i><%= year %></i></h5>
+        <div id="hospitalizations-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'hospitalizations-<%= year %>',
+           xkey: 'month',
+           ykeys: ['vaccinated', 'unvaccinated', ],
+           labels: ["Vaccinated", "Unvaccinated", ],
+           xLabels: 'month',
+           data: [
+             <% deaths.each do |record| %>
+              <% next unless srag.valid_month? record[:month] %>
+              { month: '<%= year %>-<%= record[:month] %>', vaccinated: <%= record[:vaccinated_percentage] %>, unvaccinated: <%= record[:unvaccinated_percentage] %>, },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           },
+           yLabelFormat: function (y) { return y.toString() + '%' },
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">ICUs (Month by Month) <i><%= year %></i></h5>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Month</th>
+              <th><b>ICU</b></th>
+              <th>Vaccinated</th>
+              <th>Unvaccinated</th>
+              <th class="fade">Undef. Vaccination</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% icus.each do |record| %>
+              <tr class="<%= 'fade' unless srag.valid_month? record[:month]%>">
+                <td><%= month_name(record[:month]) %></td>
+                <td><b><%= record[:total] %></b></td>
+                <td><%= record[:vaccinated] %> <small>(<%= record[:vaccinated_percentage] %>%)</small></td>
+                <td><%= record[:unvaccinated] %> <small>(<%= record[:unvaccinated_percentage] %>%)</small></td>
+                <td class="fade"><%= record[:undef] %> <small>(<%= record[:undef_percentage] %>%)</small></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Percentage of ICUs (Vaccinated vs Unvaccinated) <i><%= year %></i></h5>
+        <div id="icus-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'icus-<%= year %>',
+           xkey: 'month',
+           ykeys: ['vaccinated', 'unvaccinated', ],
+           labels: ["Vaccinated", "Unvaccinated", ],
+           xLabels: 'month',
+           data: [
+             <% icus.each do |record| %>
+              <% next unless srag.valid_month? record[:month] %>
+              { month: '<%= year %>-<%= record[:month] %>', vaccinated: <%= record[:vaccinated_percentage] %>, unvaccinated: <%= record[:unvaccinated_percentage] %>, },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           },
+           yLabelFormat: function (y) { return y.toString() + '%' },
+         });
+        </script>
+      </div>
+
     </div> <!-- END OF YEAR BLOCK !-->
-    <% end %>
-
-    <br/>
-    <br/>
-    <br/>
-
-  </div>
+  </div> <!-- END OF YEAR COL !-->
+  <% end %>
 </div>
+
+<br/>
+<br/>
+<br/>
