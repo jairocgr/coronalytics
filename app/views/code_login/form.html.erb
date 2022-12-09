@@ -1,0 +1,48 @@
+
+
+
+<main class="main mb-4">
+  <div class="container">
+
+    <h1>Access Code Required</h1>
+    <p class="lead">
+      Use the code given to you by the Admin
+    </p>
+
+    <br/>
+
+    <div class="row">
+      <div class="col col-md-5 col-12">
+
+        <%= form_tag(code_login_path) do %>
+
+          <div class="mb-3">
+            <label class="form-label">Access Code</label>
+            <input class="form-control" placeholder="YOUR CODE" name="access_code">
+          </div>
+
+          <button class="btn btn-primary" type="submit">
+            Go
+          </button>
+
+        <% end %>
+      </div>
+    </div>
+
+
+    <script type="text/javascript">
+      $(function() {
+        <% flash.each do |type, msg| %>
+          <% if type == "notice" then %>
+            notifySuccess("<%= msg.html_safe %>")
+          <% end %>
+          <% if type == "alert" then %>
+            notifyError("<%= msg.html_safe %>")
+          <% end %>
+        <% end %>
+      });
+    </script>
+
+
+  </div>
+</main>
