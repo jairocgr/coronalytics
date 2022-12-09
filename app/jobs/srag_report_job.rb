@@ -3,8 +3,9 @@ class SragReportJob < ApplicationJob
 
   def perform(srag)
 
+    # The median age of brazil is 27.9
     report = SragReport.new
-    nrecords = srag.records.count
+    nrecords = srag.records.where('nu_idade_n > 27').count
 
     logger.info "Generating report for #{srag.year} (#{nrecords} records, release date #{srag.release_date})"
 

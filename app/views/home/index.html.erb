@@ -39,11 +39,11 @@
     <h1>SRAG Data Analysis</h1>
     <p class="lead">
       A basic quantitative analysis was made of the Brazilian Health Ministry raw <code>SRAG</code> files
-      with hope of gaining insight about how the vaccination program is doing overall.
+      with hopes of gaining insight into how the vaccination program is doing overall.
     </p>
 
     <p class="lead">
-      All the original SRAG files are availiable at <a href="https://opendatasus.saude.gov.br">https://opendatasus.saude.gov.br</a>
+      All the original files are available at <a href="https://opendatasus.saude.gov.br">https://opendatasus.saude.gov.br</a>
     </p>
 
     <br/>
@@ -61,9 +61,10 @@
       <% deaths = srag.report[:deaths] %>
       <% hospitalizations = srag.report[:hospitalizations] %>
       <% icus = srag.report[:icus] %>
+      <% vaccination = @report.vaccination(year) %>
 
       <p>
-        Data from the SRAG file <code><%= srag.file_name %></code> published in <b><%= srag.release_date.to_formatted_s(:long) %></b>
+        Data from the SRAG file <code><%= srag.file_name %></code> published on <b><%= srag.release_date.to_formatted_s(:long) %></b>
       </p>
 
       <div class="section">
@@ -128,7 +129,7 @@
             </tr>
           </thead>
           <tbody>
-            <% @report.vaccination(year).each do |record| %>
+            <% vaccination.each do |record| %>
               <tr>
                 <td><%= month_name(record[:month]) %></td>
                 <td><%= record[:one_dose] %>%</td>
@@ -147,7 +148,7 @@
            labels: ['% one dose', '% two shots'],
            xLabels: 'month',
            data: [
-             <% @report.vaccination(year).each do |record| %>
+             <% vaccination.each do |record| %>
               <% next unless srag.valid_month? record[:month] %>
               { year: '<%= year %>-<%= record[:month] %>', one_dose: <%= record[:one_dose] %>, two_doses: <%= record[:two_doses] %> },
              <% end %>
@@ -303,6 +304,36 @@
              return months[x.getMonth()]
            },
            yLabelFormat: function (y) { return y.toString() + '%' },
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Correlation with Vaccination (Deaths, Hospitalization, ICUs) <i><%= year %></i></h5>
+        <div id="correlation-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'correlation-<%= year %>',
+           xkey: 'month',
+           ykeys: [ 'vaccination', 'deaths', 'hospitalizations', 'icus', ],
+           labels: ["Vaccination", "Deaths", "Hospitalizations", "ICUs", ],
+           xLabels: 'month',
+           data: [
+             <% deaths.each_index do |i| %>
+              <% next unless srag.valid_month? i + 1 %>
+              { month: '<%= year %>-<%= i + 1 %>',
+                vaccination: <%= vaccination[i][:one_dose] %>,
+                deaths: <%= deaths[i][:vaccinated_percentage] %>,
+                hospitalizations: <%= hospitalizations[i][:vaccinated_percentage] %>,
+                icus: <%= icus[i][:vaccinated_percentage] %>, },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           },
+           yLabelFormat: function (y) { return y.toString() + '%' },
+           lineColors: [ '#0b62a4', '#dc3545', '#ffc107', '#ff9002' ],
+           lineWidth: 2,
          });
         </script>
       </div>
