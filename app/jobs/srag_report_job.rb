@@ -1,20 +1,31 @@
 class SragReportJob < ApplicationJob
   queue_as :default
 
-  def perform(srag)
+  BATCH_SIZE = 2048
 
+  def perform(srag)
     # The median age of brazil is 27.9
-    report = SragReport.new
-    nrecords = srag.records.where('nu_idade_n > 27').count
+    report = SragReportMaker.new
+    nrecords = srag.records.count
+
+    srag.update! status: 'GEN_REPORT'
 
     logger.info "Generating report for #{srag.year} (#{nrecords} records, release date #{srag.release_date})"
 
-    srag.records.find_each do |record|
+    srag.records.find_each(batch_size: BATCH_SIZE) do |record|
       report.add(record)
     end
 
-    puts "New report for #{srag.year} is done"
-    srag.update! report: report.to_hash
+    srag.vaccination_numbers.each do |vaccination|
+      report.add_vaccination_numbers(vaccination)
+    end
 
+    report.summarize
+
+    puts "New report for #{srag.year} (#{srag.release_date}) is done"
+    srag.update! report: report.to_hash, status: 'REPORT_DONE'
+
+  ensure
+    srag.update status: 'REPORT_ERROR' unless srag.status == 'REPORT_DONE'
   end
 end

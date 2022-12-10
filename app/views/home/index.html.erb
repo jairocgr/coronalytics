@@ -61,7 +61,8 @@
       <% deaths = srag.report[:deaths] %>
       <% hospitalizations = srag.report[:hospitalizations] %>
       <% icus = srag.report[:icus] %>
-      <% vaccination = @report.vaccination(year) %>
+      <% vaccination = srag.report[:vaccination]  %>
+      <% summary = srag.report[:summary]  %>
 
       <p>
         Data from the SRAG file <code><%= srag.file_name %></code> published on <b><%= srag.release_date.to_formatted_s(:long) %></b>
@@ -336,6 +337,151 @@
            lineWidth: 2,
          });
         </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Correlation with Full Vaccination (Two Shots, Deaths, Hospitalization, ICUs) <i><%= year %></i></h5>
+        <div id="correlation-full-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'correlation-full-<%= year %>',
+           xkey: 'month',
+           ykeys: [ 'vaccination', 'deaths', 'hospitalizations', 'icus', ],
+           labels: ["Full Vaccination", "Deaths", "Hospitalizations", "ICUs", ],
+           xLabels: 'month',
+           data: [
+             <% deaths.each_index do |i| %>
+              <% next unless srag.valid_month? i + 1 %>
+              { month: '<%= year %>-<%= i + 1 %>',
+                vaccination: <%= vaccination[i][:two_doses] %>,
+                deaths: <%= deaths[i][:fully_vaccinated_percentage] %>,
+                hospitalizations: <%= hospitalizations[i][:fully_vaccinated_percentage] %>,
+                icus: <%= icus[i][:fully_vaccinated_percentage] %>, },
+             <% end %>
+           ],
+           xLabelFormat: function(x) {
+             return months[x.getMonth()]
+           },
+           yLabelFormat: function (y) { return y.toString() + '%' },
+           lineColors: [ '#0b62a4', '#dc3545', '#ffc107', '#ff9002' ],
+           lineWidth: 2,
+         });
+        </script>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Deaths Summary (Whole Year) <i><%= year %></i></h5>
+        <div id="deaths-summary-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          Morris.Donut({
+           element: 'deaths-summary-<%= year %>',
+           data: [
+             { label: 'Vaccinated',   value: <%= summary[:deaths][:vaccinated_percentage] %> },
+             { label: 'Unvaccinated', value: <%= summary[:deaths][:unvaccinated_percentage] %> },
+           ],
+           formatter: function (y, data) { return y + '%' },
+         });
+        </script>
+        <br/>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Status</th>
+              <th>Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Vaccinated</td>   <td><%= summary[:deaths][:vaccinated] %> (<%= summary[:deaths][:vaccinated_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Unvaccinated</td> <td><%= summary[:deaths][:unvaccinated] %> (<%= summary[:deaths][:unvaccinated_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Two Shots</td>    <td><%= summary[:deaths][:fully_vaccinated] %> (<%= summary[:deaths][:fully_vaccinated_percentage] %>%)</td>
+            </tr>
+            <tr class="fade">
+              <td>Undefined</td>    <td><%= summary[:deaths][:undef] %> (<%= summary[:deaths][:undef_percentage] %>%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Hospitalizations Summary (Whole Year) <i><%= year %></i></h5>
+        <div id="hospitalizations-summary-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          Morris.Donut({
+           element: 'hospitalizations-summary-<%= year %>',
+           data: [
+             { label: 'Vaccinated',   value: <%= summary[:hospitalizations][:vaccinated_percentage] %> },
+             { label: 'Unvaccinated', value: <%= summary[:hospitalizations][:unvaccinated_percentage] %> },
+           ],
+           formatter: function (y, data) { return y + '%' },
+         });
+        </script>
+        <br/>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Status</th>
+              <th>Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Vaccinated</td>   <td><%= summary[:hospitalizations][:vaccinated] %> (<%= summary[:hospitalizations][:vaccinated_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Unvaccinated</td> <td><%= summary[:hospitalizations][:unvaccinated] %> (<%= summary[:hospitalizations][:unvaccinated_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Two Shots</td>    <td><%= summary[:hospitalizations][:fully_vaccinated] %> (<%= summary[:hospitalizations][:fully_vaccinated_percentage] %>%)</td>
+            </tr>
+            <tr class="fade">
+              <td>Undefined</td>    <td><%= summary[:hospitalizations][:undef] %> (<%= summary[:hospitalizations][:undef_percentage] %>%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h5 class="title">ICUs Summary (Whole Year) <i><%= year %></i></h5>
+        <div id="icus-summary-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          Morris.Donut({
+           element: 'icus-summary-<%= year %>',
+           resize: true,
+           data: [
+             { label: 'Vaccinated',   value: <%= summary[:icus][:vaccinated_percentage] %> },
+             { label: 'Unvaccinated', value: <%= summary[:icus][:unvaccinated_percentage] %> },
+           ],
+           formatter: function (y, data) { return y + '%' },
+         });
+        </script>
+        <br/>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Status</th>
+              <th>Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Vaccinated</td>   <td><%= summary[:icus][:vaccinated] %> (<%= summary[:icus][:vaccinated_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Unvaccinated</td> <td><%= summary[:icus][:unvaccinated] %> (<%= summary[:icus][:unvaccinated_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Two Shots</td>    <td><%= summary[:icus][:fully_vaccinated] %> (<%= summary[:icus][:fully_vaccinated_percentage] %>%)</td>
+            </tr>
+            <tr class="fade">
+              <td>Undefined</td>    <td><%= summary[:icus][:undef] %> (<%= summary[:icus][:undef_percentage] %>%)</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
     </div> <!-- END OF YEAR BLOCK !-->

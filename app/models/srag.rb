@@ -14,6 +14,10 @@ class Srag < ApplicationRecord
     Pathname.new(url).basename
   end
 
+  def vaccination_numbers
+    @vaccination_numbers ||= VaccinationNumber.where(year: year)
+  end
+
   def inside_time_window?(date)
     # Must be inside the it's year
     return false if date.year != year
