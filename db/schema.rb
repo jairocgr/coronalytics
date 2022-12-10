@@ -188,9 +188,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_09_110756) do
     t.integer "fnt_in_cov"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["evolucao"], name: "evolucao_index"
     t.index ["srag_id"], name: "index_srag_records_on_srag_id"
-    t.index ["vacina_cov"], name: "dt_evolucao"
   end
 
   create_table "srags", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
