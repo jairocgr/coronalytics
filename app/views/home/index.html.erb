@@ -36,14 +36,19 @@
   <div class="col col-md-8 col-12">
     <div class="main-title">coronalytics <i class="fa fa-pie-chart"></i></div>
 
-    <h1>SRAG Data Analysis</h1>
+    <h1><b>SARS-CoV-2</b> SRAG Data Analysis</h1>
     <p class="lead">
-      A basic quantitative analysis was made of the Brazilian Health Ministry raw <code>SRAG</code> files
+      A basic quantitative analysis was made of the Brazilian Health Ministry raw <code>SRAG</code>* files
       with hopes of gaining insight into how the vaccination program is doing overall.
     </p>
 
     <p class="lead">
       All the original files are available at <a href="https://opendatasus.saude.gov.br">https://opendatasus.saude.gov.br</a>
+    </p>
+
+    <p class="foot-lead">
+      * Only <b>SARS-CoV-2</b> cases (<span class="monospaced">CLASSI_FIN=5</span>) were analysed from the <code>SRAG</code> files.
+      Cases of Influenza viruses, Adenovirus, Rinovirus, Parainfluenza and others were <em>discarted</em>.
     </p>
 
     <br/>
@@ -95,7 +100,7 @@
       </div>
 
       <div class="section">
-        <h5 class="title">Deaths (Month by Month) <i><%= year %></i></h5>
+        <h5 class="title">SARS-CoV-2 Deaths (Month by Month) <i><%= year %></i></h5>
         <div id="deaths-<%= year %>" class="graph-canvas"></div>
         <script type="text/javascript">
           new Morris.Line({
