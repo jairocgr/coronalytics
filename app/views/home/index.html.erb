@@ -489,6 +489,141 @@
         </table>
       </div>
 
+      <div class="section">
+        <h5 class="title">Vaccinated Deaths (Manufacturers) <i><%= year %></i></h5>
+        <div id="deaths-manufacturers-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          Morris.Donut({
+           element: 'deaths-manufacturers-<%= year %>',
+           data: [
+             { label: 'Pfizer',   value: <%= summary[:deaths][:pfizer_percentage] %> },
+             { label: 'Coronavac', value: <%= summary[:deaths][:coronavac_percentage] %> },
+             { label: 'Astrazeneca', value: <%= summary[:deaths][:astrazeneca_percentage] %> },
+             { label: 'Janssen', value: <%= summary[:deaths][:janssen_percentage] %> },
+             { label: 'Undefined', value: <%= summary[:deaths][:other_percentage] %> },
+           ],
+           colors: [ '#0b62a4', '#ff9002', '#65647C', '#9C254D', '#CCC' ],
+           formatter: function (y, data) { return y + '%' },
+         });
+        </script>
+        <br/>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Manufacturers</th>
+              <th>Numbers</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pfizer</td>   <td><%= summary[:deaths][:pfizer] %> (<%= summary[:deaths][:pfizer_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Coronavac/Butantan</td> <td><%= summary[:deaths][:coronavac] %> (<%= summary[:deaths][:coronavac_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Astrazeneca/FioCruz</td> <td><%= summary[:deaths][:astrazeneca] %> (<%= summary[:deaths][:astrazeneca_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Janssen (Jhonson&J)</td> <td><%= summary[:deaths][:janssen] %> (<%= summary[:deaths][:janssen_percentage] %>%)</td>
+            </tr>
+            <tr class="fade">
+              <td>Others (or Undefined)</td>    <td><%= summary[:deaths][:other] %> (<%= summary[:deaths][:other_percentage] %>%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Hospitalization of Vaccinated (Manufacturers) <i><%= year %></i></h5>
+        <div id="hospitalizations-manufacturers-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          Morris.Donut({
+           element: 'hospitalizations-manufacturers-<%= year %>',
+           data: [
+             { label: 'Pfizer',   value: <%= summary[:hospitalizations][:pfizer_percentage] %> },
+             { label: 'Coronavac', value: <%= summary[:hospitalizations][:coronavac_percentage] %> },
+             { label: 'Astrazeneca', value: <%= summary[:hospitalizations][:astrazeneca_percentage] %> },
+             { label: 'Janssen', value: <%= summary[:hospitalizations][:janssen_percentage] %> },
+             { label: 'Undefined', value: <%= summary[:hospitalizations][:other_percentage] %> },
+           ],
+           colors: [ '#0b62a4', '#ff9002', '#65647C', '#9C254D', '#CCC' ],
+           formatter: function (y, data) { return y + '%' },
+         });
+        </script>
+        <br/>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Manufacturers</th>
+              <th>Numbers</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pfizer</td>   <td><%= summary[:hospitalizations][:pfizer] %> (<%= summary[:hospitalizations][:pfizer_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Coronavac/Butantan</td> <td><%= summary[:hospitalizations][:coronavac] %> (<%= summary[:hospitalizations][:coronavac_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Astrazeneca/FioCruz</td> <td><%= summary[:hospitalizations][:astrazeneca] %> (<%= summary[:hospitalizations][:astrazeneca_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Janssen (Jhonson&J)</td> <td><%= summary[:hospitalizations][:janssen] %> (<%= summary[:hospitalizations][:janssen_percentage] %>%)</td>
+            </tr>
+            <tr class="fade">
+              <td>Others (or Undefined)</td>    <td><%= summary[:hospitalizations][:other] %> (<%= summary[:hospitalizations][:other_percentage] %>%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="section">
+        <h5 class="title">Vaccinated ICUs (Manufacturers) <i><%= year %></i></h5>
+        <div id="icus-manufacturers-<%= year %>" class="graph-canvas"></div>
+        <script type="text/javascript">
+          Morris.Donut({
+           element: 'icus-manufacturers-<%= year %>',
+           data: [
+             { label: 'Pfizer',   value: <%= summary[:icus][:pfizer_percentage] %> },
+             { label: 'Coronavac', value: <%= summary[:icus][:coronavac_percentage] %> },
+             { label: 'Astrazeneca', value: <%= summary[:icus][:astrazeneca_percentage] %> },
+             { label: 'Janssen', value: <%= summary[:icus][:janssen_percentage] %> },
+             { label: 'Undefined', value: <%= summary[:icus][:other_percentage] %> },
+           ],
+           colors: [ '#0b62a4', '#ff9002', '#65647C', '#9C254D', '#CCC' ],
+           formatter: function (y, data) { return y + '%' },
+         });
+        </script>
+        <br/>
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Manufacturers</th>
+              <th>Numbers</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Pfizer</td>   <td><%= summary[:icus][:pfizer] %> (<%= summary[:icus][:pfizer_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Coronavac/Butantan</td> <td><%= summary[:icus][:coronavac] %> (<%= summary[:icus][:coronavac_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Astrazeneca/FioCruz</td> <td><%= summary[:icus][:astrazeneca] %> (<%= summary[:icus][:astrazeneca_percentage] %>%)</td>
+            </tr>
+            <tr>
+              <td>Janssen (Jhonson&J)</td> <td><%= summary[:icus][:janssen] %> (<%= summary[:icus][:janssen_percentage] %>%)</td>
+            </tr>
+            <tr class="fade">
+              <td>Others (or Undefined)</td>    <td><%= summary[:icus][:other] %> (<%= summary[:icus][:other_percentage] %>%)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
     </div> <!-- END OF YEAR BLOCK !-->
   </div> <!-- END OF YEAR COL !-->
   <% end %>

@@ -24,6 +24,12 @@ class SragReportMaker
         unvaccinated_percentage: 0,
         fully_vaccinated_percentage: 0,
         undef_percentage: 0,
+
+        pfizer: 0,
+        coronavac: 0,
+        astrazeneca: 0,
+        janssen: 0,
+        other: 0,
       })
       hospitalizations.append({
         month: month,
@@ -36,6 +42,12 @@ class SragReportMaker
         unvaccinated_percentage: 0,
         fully_vaccinated_percentage: 0,
         undef_percentage: 0,
+
+        pfizer: 0,
+        coronavac: 0,
+        astrazeneca: 0,
+        janssen: 0,
+        other: 0,
       })
       icus.append({
         month: month,
@@ -48,6 +60,12 @@ class SragReportMaker
         unvaccinated_percentage: 0,
         fully_vaccinated_percentage: 0,
         undef_percentage: 0,
+
+        pfizer: 0,
+        coronavac: 0,
+        astrazeneca: 0,
+        janssen: 0,
+        other: 0,
       })
 
       vaccination.append({
@@ -67,6 +85,12 @@ class SragReportMaker
       unvaccinated_percentage: 0,
       fully_vaccinated_percentage: 0,
       undef_percentage: 0,
+
+      pfizer: 0,
+      coronavac: 0,
+      astrazeneca: 0,
+      janssen: 0,
+      other: 0,
     })
 
     summary[:hospitalizations] = ({
@@ -79,6 +103,12 @@ class SragReportMaker
       unvaccinated_percentage: 0,
       fully_vaccinated_percentage: 0,
       undef_percentage: 0,
+
+      pfizer: 0,
+      coronavac: 0,
+      astrazeneca: 0,
+      janssen: 0,
+      other: 0,
     })
 
     summary[:icus] = ({
@@ -91,6 +121,12 @@ class SragReportMaker
       unvaccinated_percentage: 0,
       fully_vaccinated_percentage: 0,
       undef_percentage: 0,
+
+      pfizer: 0,
+      coronavac: 0,
+      astrazeneca: 0,
+      janssen: 0,
+      other: 0,
     })
   end
 
@@ -135,6 +171,12 @@ private
       summary[:hospitalizations][:unvaccinated] += record[:unvaccinated]
       summary[:hospitalizations][:fully_vaccinated] += record[:fully_vaccinated]
       summary[:hospitalizations][:undef] += record[:undef]
+
+      summary[:hospitalizations][:pfizer] += record[:pfizer]
+      summary[:hospitalizations][:coronavac] += record[:coronavac]
+      summary[:hospitalizations][:astrazeneca] += record[:astrazeneca]
+      summary[:hospitalizations][:janssen] += record[:janssen]
+      summary[:hospitalizations][:other] += record[:other]
     end
 
     total = summary[:hospitalizations][:vaccinated] + summary[:hospitalizations][:unvaccinated]
@@ -146,6 +188,15 @@ private
 
     # Undef. percentage is calculated in relation with the real total
     summary[:hospitalizations][:undef_percentage] = (summary[:hospitalizations][:undef]*100) / summary[:hospitalizations][:total]
+
+    total = summary[:hospitalizations][:vaccinated]
+    total = 1 if total == 0
+
+    summary[:hospitalizations][:pfizer_percentage] = (summary[:hospitalizations][:pfizer]*100) / total
+    summary[:hospitalizations][:coronavac_percentage] = (summary[:hospitalizations][:coronavac]*100) / total
+    summary[:hospitalizations][:astrazeneca_percentage] = (summary[:hospitalizations][:astrazeneca]*100) / total
+    summary[:hospitalizations][:janssen_percentage] = (summary[:hospitalizations][:janssen]*100) / total
+    summary[:hospitalizations][:other_percentage] = (summary[:hospitalizations][:other]*100) / total
   end
 
   def summarize_deaths
@@ -155,6 +206,12 @@ private
       summary[:deaths][:unvaccinated] += record[:unvaccinated]
       summary[:deaths][:fully_vaccinated] += record[:fully_vaccinated]
       summary[:deaths][:undef] += record[:undef]
+
+      summary[:deaths][:pfizer] += record[:pfizer]
+      summary[:deaths][:coronavac] += record[:coronavac]
+      summary[:deaths][:astrazeneca] += record[:astrazeneca]
+      summary[:deaths][:janssen] += record[:janssen]
+      summary[:deaths][:other] += record[:other]
     end
 
     total = summary[:deaths][:vaccinated] + summary[:deaths][:unvaccinated]
@@ -166,6 +223,15 @@ private
 
     # Undef. percentage is calculated in relation with the real total
     summary[:deaths][:undef_percentage] = (summary[:deaths][:undef]*100) / summary[:deaths][:total]
+
+    total = summary[:deaths][:vaccinated]
+    total = 1 if total == 0
+
+    summary[:deaths][:pfizer_percentage] = (summary[:deaths][:pfizer]*100) / total
+    summary[:deaths][:coronavac_percentage] = (summary[:deaths][:coronavac]*100) / total
+    summary[:deaths][:astrazeneca_percentage] = (summary[:deaths][:astrazeneca]*100) / total
+    summary[:deaths][:janssen_percentage] = (summary[:deaths][:janssen]*100) / total
+    summary[:deaths][:other_percentage] = (summary[:deaths][:other]*100) / total
   end
 
   def summarize_icus
@@ -175,10 +241,21 @@ private
       summary[:icus][:unvaccinated] += record[:unvaccinated]
       summary[:icus][:fully_vaccinated] += record[:fully_vaccinated]
       summary[:icus][:undef] += record[:undef]
-      summary[:icus][:vaccinated_percentage] += record[:vaccinated_percentage]
-      summary[:icus][:unvaccinated_percentage] += record[:unvaccinated_percentage]
-      summary[:icus][:fully_vaccinated_percentage] += record[:fully_vaccinated_percentage]
-      summary[:icus][:undef_percentage] += record[:undef_percentage]
+
+      summary[:icus][:pfizer] += record[:pfizer]
+      summary[:icus][:coronavac] += record[:coronavac]
+      summary[:icus][:astrazeneca] += record[:astrazeneca]
+      summary[:icus][:janssen] += record[:janssen]
+      summary[:icus][:other] += record[:other]
+
+      total = summary[:icus][:vaccinated]
+      total = 1 if total == 0
+
+      summary[:icus][:pfizer_percentage] = (summary[:icus][:pfizer]*100) / total
+      summary[:icus][:coronavac_percentage] = (summary[:icus][:coronavac]*100) / total
+      summary[:icus][:astrazeneca_percentage] = (summary[:icus][:astrazeneca]*100) / total
+      summary[:icus][:janssen_percentage] = (summary[:icus][:janssen]*100) / total
+      summary[:icus][:other_percentage] = (summary[:icus][:other]*100) / total
     end
 
     total = summary[:icus][:vaccinated] + summary[:icus][:unvaccinated]
@@ -206,6 +283,17 @@ private
 
     if record.vaccinated? then
       month[:vaccinated] += 1
+      if record.pfizer? then
+        month[:pfizer] += 1
+      elsif record.janssen? then
+        month[:janssen] += 1
+      elsif record.coronavac? then
+        month[:coronavac] += 1
+      elsif record.astrazeneca? then
+        month[:astrazeneca] += 1
+      else
+        month[:other] += 1
+      end
     elsif record.unvaccinated?  then
       month[:unvaccinated] += 1
     else
@@ -244,6 +332,17 @@ private
 
     if record.vaccinated? then
       report[:vaccinated] += 1
+      if record.pfizer? then
+        report[:pfizer] += 1
+      elsif record.janssen? then
+        report[:janssen] += 1
+      elsif record.coronavac? then
+        report[:coronavac] += 1
+      elsif record.astrazeneca? then
+        report[:astrazeneca] += 1
+      else
+        report[:other] += 1
+      end
     elsif record.unvaccinated?  then
       report[:unvaccinated] += 1
     else
@@ -282,6 +381,17 @@ private
 
     if record.vaccinated? then
       report[:vaccinated] += 1
+      if record.pfizer? then
+        report[:pfizer] += 1
+      elsif record.janssen? then
+        report[:janssen] += 1
+      elsif record.coronavac? then
+        report[:coronavac] += 1
+      elsif record.astrazeneca? then
+        report[:astrazeneca] += 1
+      else
+        report[:other] += 1
+      end
     elsif record.unvaccinated?  then
       report[:unvaccinated] += 1
     else
