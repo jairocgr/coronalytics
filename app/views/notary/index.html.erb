@@ -6,7 +6,7 @@
 
     <h1>Notary Data Analysis</h1>
     <p class="lead">
-      A basic quantitative analysis was made of the <b>Brazilian Notary Public Office</b> <em>death certificate</em> numbers 
+      A basic quantitative analysis was made of the <b>Brazilian Notary Public Office</b> <em>death certificate</em> numbers
       with hopes of gaining insight into how much the pandemic is causing <b>excess deaths</b>.
     </p>
 
@@ -23,7 +23,7 @@
 
       <div class="section">
         <h5 class="title">All Cause Deaths (Year by Year)</h5>
-        <p>Original data available at 
+        <p>Original data available at
             <a href="https://transparencia.registrocivil.org.br/registros">https://transparencia.registrocivil.org.br/registros</a>
         </p>
         <div id="deaths-year-by-year" class="graph-canvas" style="height: 240px"></div>
@@ -43,7 +43,7 @@
            ymax: 1900000,
          });
         </script>
-         
+
          <table class="table table-sm">
            <thead class="table-light">
              <tr>
@@ -63,10 +63,10 @@
            </tbody>
          </table>
       </div>
-      
+
       <div class="section">
         <h5 class="title">Expected vs Actual Deaths (Excess Mortality)</h5>
-        
+
         <div id="excess-deaths-graph" class="graph-canvas" style="height: 240px"></div>
         <script type="text/javascript">
           new Morris.Line({
@@ -85,15 +85,14 @@
               },
              <% end %>
            ],
-           lineColors: [ '#0b62a4', '#dc3545', '#ff9002', '#ffc107' ], // 
+           lineColors: [ '#0b62a4', '#dc3545', '#ff9002', '#ffc107' ], //
            lineWidth: 2,
            pointSize: 5,
-           smooth: false,
            ymin: 1200000,
            ymax: 1900000,
          });
         </script>
-        
+
         <table class="table table-sm">
           <thead class="table-light">
             <tr>
@@ -118,7 +117,7 @@
                 <td>
                   <b class="<%= record.excess_death_result %>">
                     <%= with_sign(record.excess_deaths / 1000) %>K
-                  </b> 
+                  </b>
                   (<%= (record.excess_deaths_increase) %>%)
                 </td>
                 <td class="fade"><%= with_sign(record.excess_worst) %></td>
