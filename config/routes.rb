@@ -19,6 +19,7 @@ Rails.application.routes.draw do
   end
 
   root "home#index"
+  get  "/notary", to: 'notary#index'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -56,5 +56,19 @@
       opacity: 1;
       color: #777;
     }
+    
+    .bad { color: #510008; }
+    .good { color: #183c00; }
+  }
+}
+
+
+.notary-report {
+  .section {
+    margin-bottom: 48px;
+    .table th, td {
+      font-size: 13px;
+    }
+    .title { font-size: 22px; }
   }
 }

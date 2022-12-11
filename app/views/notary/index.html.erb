@@ -1,0 +1,140 @@
+
+
+<div class="row">
+  <div class="col col-md-8 col-12">
+    <div class="main-title">coronalytics <i class="fa fa-pie-chart"></i></div>
+
+    <h1>Notary Data Analysis</h1>
+    <p class="lead">
+      A basic quantitative analysis was made of the <b>Brazilian Notary Public Office</b> <em>death certificate</em> numbers 
+      with hopes of gaining insight into how much the pandemic is causing <b>excess deaths</b>.
+    </p>
+
+    <br/>
+    <br/>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col col-md-7 col-12">
+    <div class="notary-report">
+
+      <% records = NotaryRecord.all %>
+
+      <div class="section">
+        <h5 class="title">All Cause Deaths (Year by Year)</h5>
+        <p>Original data available at 
+            <a href="https://transparencia.registrocivil.org.br/registros">https://transparencia.registrocivil.org.br/registros</a>
+        </p>
+        <div id="deaths-year-by-year" class="graph-canvas" style="height: 240px"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'deaths-year-by-year',
+           xkey: 'year',
+           ykeys: ['total' ],
+           labels: ['Total Deaths' ],
+           xLabels: 'year',
+           data: [
+            <% records.each do |record| %>
+              { year: '<%= record.year %>', total: <%= record.deaths %> },
+            <% end %>
+           ],
+           ymin: 700000,
+           ymax: 1900000,
+         });
+        </script>
+         
+         <table class="table table-sm">
+           <thead class="table-light">
+             <tr>
+               <th>Year</th>
+               <th>Deaths</th>
+               <th>Pandemic Year?</th>
+             </tr>
+           </thead>
+           <tbody>
+             <% records.each do |record| %>
+               <tr>
+                 <td><%= record.year %></td>
+                 <td><%= record.deaths %></td>
+                 <td><%= record.pandemic_year? ? "YES" : "NO" %></td>
+               </tr>
+             <% end %>
+           </tbody>
+         </table>
+      </div>
+      
+      <div class="section">
+        <h5 class="title">Expected vs Actual Deaths (Excess Mortality)</h5>
+        
+        <div id="excess-deaths-graph" class="graph-canvas" style="height: 240px"></div>
+        <script type="text/javascript">
+          new Morris.Line({
+           element: 'excess-deaths-graph',
+           xkey: 'year',
+           ykeys: [ 'expected', 'actual', 'worst_case', 'best_case', ],
+           labels: ["Expected Deaths", "Actual Deaths", "Expected Worst", "Expected Best", ],
+           xLabels: 'year',
+           data: [
+             <% records.where(pandemic_year: true).each do |record| %>
+              { year: '<%= record.year %>',
+                expected: <%= record.expected_deaths %>,
+                actual: <%= record.deaths %>,
+                worst_case: <%= record.expected_worst_case %>,
+                best_case: <%= record.expected_best_case %>,
+              },
+             <% end %>
+           ],
+           lineColors: [ '#0b62a4', '#dc3545', '#ff9002', '#ffc107' ], // 
+           lineWidth: 2,
+           pointSize: 5,
+           smooth: false,
+           ymin: 1200000,
+           ymax: 1900000,
+         });
+        </script>
+        
+        <table class="table table-sm">
+          <thead class="table-light">
+            <tr>
+              <th>Year</th>
+              <th>Expected</th>
+              <th class="fade">Worst Case</th>
+              <th class="fade">Best Case</th>
+              <th>Actual Deaths</th>
+              <th><i>Excess Deaths</i></th>
+              <th class="fade">Excess Worst</th>
+              <th class="fade">Excess Best</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% records.where(pandemic_year: true).each do |record| %>
+              <tr>
+                <td><%= record.year %></td>
+                <td><%= record.expected_deaths %></td>
+                <td class="fade"><%= record.expected_worst_case %></td>
+                <td class="fade"><%= record.expected_best_case %></td>
+                <td><%= record.deaths %></td>
+                <td>
+                  <b class="<%= record.excess_death_result %>">
+                    <%= with_sign(record.excess_deaths / 1000) %>K
+                  </b> 
+                  (<%= (record.excess_deaths_increase) %>%)
+                </td>
+                <td class="fade"><%= with_sign(record.excess_worst) %></td>
+                <td class="fade"><%= with_sign(record.excess_best) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+<br/>
+<br/>
+<br/>
