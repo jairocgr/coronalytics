@@ -1,5 +1,8 @@
 
 class NotaryRecord < ApplicationRecord
+
+  validates :year, presence: true, uniqueness: true, comparison: { greater_than: 2010, less_than: 2030 }, numericality: { only_integer: true }
+  validates :deaths, presence: true, comparison: { greater_than: 0, less_than: 5000000 }, numericality: { only_integer: true }
   
   def expected_deaths
     return death_record_before + (death_record_before * avg_increase).floor

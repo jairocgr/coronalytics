@@ -1,0 +1,56 @@
+
+<div class="list-header row">
+  <div class="col-md-8 col-12">
+    <h1><%= t 'admin.notary_records.index.title' %></h1>
+    <p class="lead">
+      <%= t('admin.notary_records.index.subtitle_html') %>
+    </p>
+  </div>
+  <div class="col-md-4 col-12 text-md-end">
+    <div class="btn-group">
+      <a class="btn btn-primary" href="<%= new_admin_notary_record_path %>">
+        <i class="fa fa-plus"></i> New Notary Record
+      </a>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Year</th>
+      <th>Deaths</th>
+      <th>Pandemic Year</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @records.each do |r| %>
+      <tr>
+        <td><%= r.year %></td>
+        <td><%= r.deaths %></td>
+        <td>
+          <em><%= r.pandemic_year ? 'YES' : 'NO' %></em>
+        </td>
+        <td>
+          <%= form_tag(admin_notary_record_path(r), method: "DELETE", class: 'frm') do %>
+            <div class="btn-group btn-group-sm">
+              <a class="btn btn-primary" href="<%= edit_admin_notary_record_path(r) %>">
+                <i class="fa fa-edit"></i> Edit
+              </a>
+              <button class="btn btn-danger btn-confirm" item-name="<%= r.year %>">
+                <i class="fa fa-trash"></i> Delete
+              </button>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <%= paginate @records, views_prefix: 'admin' %>
+  </div>
+</div>

@@ -38,6 +38,7 @@ en:
     profile: Your profile
     vaccination_numbers: Vaccination Numbers
     srags: SRAG
+    notary_records: Notary Records
 
   admin:
     vaccination_numbers:
@@ -58,6 +59,20 @@ en:
       edit:
         title: Edit Srag
         subtitle_html: Edit SRAG file details
+    notary_records:
+      index:
+        title: Notary Records
+        subtitle_html: Death certificate numbers from Brazilian Notary Public Office 
+      flash:
+        created: Notary Records %{year} created
+        updated: Notary Records %{year} updated successfully
+        deleted: Notary Records %{year} deleted
+      new:
+        title: New Notary Record
+        subtitle: Add a new record
+      edit:
+        title: Edit Notary Record
+        subtitle_html: Edit Notary Record 
     users:
       flash:
         created: User %{name} created! Email sent to %{email}
