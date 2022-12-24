@@ -1,10 +1,15 @@
 
 require 'pathname'
+require 'uri'
 
 class Srag < ApplicationRecord
 
-  has_many :records, class_name: "SragRecord"
+  has_many :records, class_name: "SragRecord", dependent: :delete_all
   serialize :report, Hash
+  
+  validates :year, presence: true, comparison: { greater_than: 2019, less_than: 2030 }, numericality: { only_integer: true }
+  validates :url, presence: true, format: { with: URI::regexp }
+  validates :release_date, presence: true
 
   def local_path
     Rails.root.join('storage', "srag-#{id}.csv")

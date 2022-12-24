@@ -1,10 +1,17 @@
 
 <div class="list-header row">
-  <div class="col-md-9 col-12">
+  <div class="col-md-8 col-12">
     <h1><%= t 'admin.srags.index.title' %></h1>
     <p class="lead">
       <%= t('admin.srags.index.subtitle_html', source: link_to("opendatasus.saude.gov.br", "https://opendatasus.saude.gov.br")) %>
     </p>
+  </div>
+  <div class="col-md-4 col-12 text-md-end">
+    <div class="btn-group">
+      <a class="btn btn-primary" href="<%= new_admin_srag_path %>">
+        <i class="fa fa-plus"></i> New SRAG
+      </a>
+    </div>
   </div>
 </div>
 
@@ -26,7 +33,7 @@
         <td>
           <code>
             <small>
-              <%= s.url %>
+              <%= s.file_name %>
             </small>
           </code>
           <% if s.downloaded? then %>
@@ -39,14 +46,17 @@
           <em><%= s.status %></em>
         </td>
         <td>
-          <%= form_tag(admin_process_srag_path(s), method: "POST", class: 'frm') do %>
+          <%= form_tag(admin_srag_path(s), method: "DELETE", class: 'frm') do %>
             <div class="btn-group btn-group-sm">
-              <a class="btn btn-primary" href="#">
+              <a class="btn btn-primary" href="<%= edit_admin_srag_path(s) %>">
                 <i class="fa fa-edit"></i> Edit
               </a>
-              <button type="submit" class="btn btn-dark" <%= 'disabled' unless s.status.in? ['CREATED', 'ERROR'] %>>
-                Process File  <i class="fa fa-download"></i>
+              <button class="btn btn-danger btn-confirm" item-name="<%= s.year %>">
+                <i class="fa fa-trash"></i> Delete
               </button>
+              <a href="<%= admin_process_srag_path(s) %>" class="btn btn-dark" <%= 'disabled' unless s.status.in? ['CREATED', 'ERROR'] %>>
+                Process File  <i class="fa fa-download"></i>
+              </a>
               <a class="btn btn-success" href="<%= admin_gen_report_srag_path(s) %>">
                 <i class="fa fa-bar-chart"></i> Report
               </a>

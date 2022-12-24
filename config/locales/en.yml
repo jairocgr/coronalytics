@@ -48,6 +48,16 @@ en:
       index:
         title: SRAG Files
         subtitle_html: Raw data from Brazillian Health Ministry (source %{source})
+      flash:
+        created: Srag %{year} (release %{release}) created
+        updated: Srag %{year} (release %{release}) updated successfully
+        deleted: Srag %{year} (release %{release}) deleted
+      new:
+        title: New Srag
+        subtitle: Add a new SRAG file published at DataSUS
+      edit:
+        title: Edit Srag
+        subtitle_html: Edit SRAG file details
     users:
       flash:
         created: User %{name} created! Email sent to %{email}
