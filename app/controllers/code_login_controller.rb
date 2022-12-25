@@ -5,7 +5,7 @@ class CodeLoginController < ApplicationController
   end
 
   def login
-    code = AccessCode.find_by code: params[:access_code]
+    code = AccessCode.actives.find_by code: params[:access_code]
     if code.blank? then
       flash.now[:alert] = "Invalid access code '<b>#{params[:access_code]}</b>'"
       render :form

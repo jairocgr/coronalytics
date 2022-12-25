@@ -1,0 +1,67 @@
+
+<div class="list-header row">
+  <div class="col-md-8 col-12">
+    <h1><%= t 'admin.access_codes.index.title' %></h1>
+    <p class="lead">
+      <%= t('admin.access_codes.index.subtitle_html') %>
+    </p>
+  </div>
+  <div class="col-md-4 col-12 text-md-end">
+    <div class="btn-group">
+      <a class="btn btn-primary" href="<%= new_admin_access_code_path %>">
+        <i class="fa fa-plus"></i> New Access Code
+      </a>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead class="table-dark">
+    <tr>
+      <th>Name</th>
+      <th>Code</th>
+      <th>Access Counter</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @codes.each do |c| %>
+      <tr>
+        <td>
+          <%= c.name %>
+          <% if c.active? then %>
+            <span class="badge text-bg-success">
+              active
+            </span>
+          <% else %>
+            <span class="badge text-bg-warning">
+              inactive
+            </span>
+          <% end %>
+        </td>
+        <td>
+          <code><%= c.code %></code>
+        </td>
+        <td><%= c.access_counter %></td>
+        <td>
+          <%= form_tag(admin_access_codes_path(c), method: "DELETE", class: 'frm') do %>
+            <div class="btn-group btn-group-sm">
+              <a class="btn btn-primary" href="<%= edit_admin_access_code_path(c) %>">
+                <i class="fa fa-edit"></i> Edit
+              </a>
+              <button class="btn btn-danger btn-confirm" item-name="<%= c.code %>">
+                <i class="fa fa-trash"></i> Delete
+              </button>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <%= paginate @codes, views_prefix: 'admin' %>
+  </div>
+</div>

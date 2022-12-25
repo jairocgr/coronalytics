@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     resources :vaccination_numbers, only: [ :index ]
     resources :srags
     resources :notary_records
+    resources :access_codes
     get '/process/srag/:id', to: 'srags#ingest', as: 'process_srag'
     get '/process/gen-report/:id', to: 'srags#gen_report', as: 'gen_report_srag'
   end

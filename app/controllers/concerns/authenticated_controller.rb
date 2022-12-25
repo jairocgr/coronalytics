@@ -13,7 +13,7 @@ module AuthenticatedController
   end
 
   def require_authentication
-    unless user_signed_in?
+    unless user_signed_in? and current_user.allowed_to_access?
       redirect_to admin_login_path, alert: "Login required!"
     end
   end

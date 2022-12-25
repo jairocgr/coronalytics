@@ -28,6 +28,10 @@ class User < ApplicationRecord
   def activate!
     update! active: true, activation_date: DateTime.now
   end
+  
+  def allowed_to_access?
+    active? and not deleted?
+  end
 
   def self.filter(filter)
     if filter.name.present? then

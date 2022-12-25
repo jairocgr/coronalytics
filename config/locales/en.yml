@@ -39,6 +39,7 @@ en:
     vaccination_numbers: Vaccination Numbers
     srags: SRAG
     notary_records: Notary Records
+    access_codes: Access Codes
 
   admin:
     vaccination_numbers:
@@ -72,7 +73,21 @@ en:
         subtitle: Add a new record
       edit:
         title: Edit Notary Record
-        subtitle_html: Edit Notary Record 
+        subtitle_html: Edit Notary Record
+    access_codes:
+      index:
+        title: Access Codes
+        subtitle_html: Codes for granting access to the reports
+      flash:
+        created: Code %{code} created
+        updated: Code %{code} updated successfully
+        deleted: Code %{code} deleted
+      new:
+        title: New Access Code
+        subtitle: Create a new Access Code
+      edit:
+        title: Edit Access Code
+        subtitle_html: Edit a new Access Code
     users:
       flash:
         created: User %{name} created! Email sent to %{email}
