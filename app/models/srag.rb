@@ -4,12 +4,29 @@ require 'uri'
 
 class Srag < ApplicationRecord
 
+  CREATED      = 'CREATED'
+  SCHEDULED    = 'SCHEDULED'
+  DOWNLOADING  = 'DOWNLOADING'
+  DOWNLOADED   = 'DOWNLOADED'
+  PROCESSING   = 'PROCESSING'
+  INGESTED     = 'INGESTED'
+  ERROR        = 'ERROR'
+  GEN_REPORT   = 'GEN_REPORT'
+  REPORT_DONE  = 'REPORT_DONE'
+  REPORT_ERROR = 'REPORT_ERROR'
+
   has_many :records, class_name: "SragRecord", dependent: :delete_all
   serialize :report, Hash
-  
+
   validates :year, presence: true, comparison: { greater_than: 2019, less_than: 2030 }, numericality: { only_integer: true }
   validates :url, presence: true, format: { with: URI::regexp }
   validates :release_date, presence: true
+
+  def mutex(expiration = 1.minutes)
+    RedisMutex.with_lock(self, block: 1, expire: expiration) do
+      yield
+    end
+  end
 
   def local_path
     Rails.root.join('storage', "srag-#{id}.csv")

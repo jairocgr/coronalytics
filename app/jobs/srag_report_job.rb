@@ -4,11 +4,18 @@ class SragReportJob < ApplicationJob
   BATCH_SIZE = 2048
 
   def perform(srag)
+    srag.mutex(40.minutes) do
+      report(srag)
+    end
+  end
+
+private
+  def report(srag)
     # The median age of brazil is 27.9
     report = SragReportMaker.new
     nrecords = srag.records.count
 
-    srag.update! status: 'GEN_REPORT'
+    srag.update! status: Srag::GEN_REPORT
 
     logger.info "Generating report for #{srag.year} (#{nrecords} records, release date #{srag.release_date})"
 
@@ -23,9 +30,9 @@ class SragReportJob < ApplicationJob
     report.summarize
 
     puts "New report for #{srag.year} (#{srag.release_date}) is done"
-    srag.update! report: report.to_hash, status: 'REPORT_DONE'
+    srag.update! report: report.to_hash, status: Srag::REPORT_DONE
 
   ensure
-    srag.update status: 'REPORT_ERROR' unless srag.status == 'REPORT_DONE'
+    srag.update status: Srag::REPORT_ERROR unless srag.status == Srag::REPORT_DONE
   end
 end

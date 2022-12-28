@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_25_034641) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_28_023212) do
   create_table "access_codes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name"
     t.string "code"
@@ -211,6 +211,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_25_034641) do
     t.string "status", limit: 24, default: "CREATED", null: false
     t.boolean "downloaded", default: false, null: false
     t.text "report"
+    t.boolean "ingested", default: false, null: false
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
