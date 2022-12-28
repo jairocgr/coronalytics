@@ -22,6 +22,10 @@ class Srag < ApplicationRecord
   validates :url, presence: true, format: { with: URI::regexp }
   validates :release_date, presence: true
 
+  after_destroy do
+    File.delete local_path if File.exist? local_path
+  end
+
   def mutex(expiration = 1.minutes)
     RedisMutex.with_lock(self, block: 1, expire: expiration) do
       yield
