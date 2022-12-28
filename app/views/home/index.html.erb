@@ -70,7 +70,7 @@
       <% summary = srag.report[:summary]  %>
 
       <p>
-        Data from the SRAG file <code><%= srag.file_name %></code> published on <b><%= srag.release_date.to_formatted_s(:long) %></b>
+        Data from file <code><%= srag.file_name %></code> published on <b><%= srag.release_date.to_formatted_s(:long) %></b>
       </p>
 
       <div class="section">
@@ -345,7 +345,7 @@
       </div>
 
       <div class="section">
-        <h5 class="title">Correlation with Full Vaccination (Two Shots, Deaths, Hospitalization, ICUs) <i><%= year %></i></h5>
+        <h5 class="title">Correlation with Full Vaccination (Two-Shots-Deaths, Hospitalization and ICUs) <i><%= year %></i></h5>
         <div id="correlation-full-<%= year %>" class="graph-canvas"></div>
         <script type="text/javascript">
           new Morris.Line({
