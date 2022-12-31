@@ -57,15 +57,15 @@ gem 'kaminari', '~> 1.2', '>= 1.2.2'
 # For Distribuited Locking
 gem 'redis-mutex', '~> 4.0', '>= 4.0.2'
 
+# To generate fake data for database seeding
+gem 'faker', '~> 2.23'
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
 
   # Load env from .env file
   gem 'dotenv-rails'
-
-  # To generate fake data for database seeding
-  gem 'faker', '~> 2.23'
 end
 
 group :development do
