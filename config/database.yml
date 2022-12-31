@@ -51,5 +51,6 @@ test:
 production:
   <<: *default
   database: coronalytics_production
+  url: <%= ENV["DATABASE_URL"] %>
 #  username: coronalytics
 #  password: <%= ENV["CORONALYTICS_DATABASE_PASSWORD"] %>
