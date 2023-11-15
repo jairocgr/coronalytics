@@ -14,8 +14,7 @@ module CodeProtectedController
 
   def require_code
     if user_with_code? and current_code.active?
-      # Temp disable count
-      # code_session.count_access
+      code_session.count_access
     else
       redirect_to code_login_path, alert: "Access code required!"
     end
